@@ -1,181 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-cn">
-  <head>
+<head>
+
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Python | Writing Bugs</title>
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <meta name="generator" content="Hugo 0.74.3" />
-    
-    
-      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
-    
-
-    
-    
-      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
-    
-
-    
-
-    
-      
-
-    
-
-    
-    
-      <link href="/tags/python/index.xml" rel="alternate" type="application/rss+xml" title="Writing Bugs" />
-      <link href="/tags/python/index.xml" rel="feed" type="application/rss+xml" title="Writing Bugs" />
-      
-    
-    
-    <meta property="og:title" content="Python" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://sukikaka.cc/tags/python/" />
-<meta property="og:updated_time" content="2019-07-09T16:00:22+00:00" />
-<meta itemprop="name" content="Python">
-<meta itemprop="description" content="">
-<meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Python"/>
-<meta name="twitter:description" content=""/>
-
-	
-  </head>
-
-  <body class="ma0 avenir bg-near-white">
-
-    
-
-  <header>
-    <div class="pb3-m pb6-l bg-black">
-      <nav class="pv3 ph3 ph4-ns" role="navigation">
-  <div class="flex-l justify-between items-center center">
-    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
-      
-        Writing Bugs
-      
-    </a>
-    <div class="flex-l items-center">
-      
-
-      
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    </div>
-  </div>
-</nav>
-
-      <div class="tc-l pv3 ph3 ph4-ns">
-        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
-          Python
-        </h1>
+    <meta property="og:title" content="Python - Writing Bugs">
+    <meta property="og:type" content="article">
         
-      </div>
-    </div>
-  </header>
+        
+    <meta name="Keywords" content="">
+    <meta name="description" content="Python">
+        
+    <meta name="author" content="">
+    <meta property="og:url" content="https://sukikaka.cc/tags/python/">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <link rel="alternate" type="application/rss+xml+xml" href="https://sukikaka.cc/tags/python/index.xml" title="Writing Bugs" />
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+</head>
 
 
-    <main class="pb7" role="main">
-      
-  <article class="cf pa3 pa4-m pa4-l">
-    <div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
-      <p>Below you will find pages that utilize the taxonomy term “Python”</p>
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://sukikaka.cc/">
+                        Writing Bugs
+                    </a>
+                
+                
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="" href="https://sukikaka.cc/">首页</a>
+                    
+                </nav>
+            </div>
+        </div>
     </div>
-  </article>
-  <div class="mw8 center">    
-    <section class="flex-ns flex-wrap justify-around mt5">
-      
-        <div class="relative w-100  mb4 bg-white">
-          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">Posts</span>
-    <h1 class="f3 near-black">
-      <a href="https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/" class="link black dim">
-        记一次celery worker hang debug
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      记一次celery worker hang debug  【写在前面】： 本文最终并没有debug出为什么卡住，虽然换了种方案解决了问题。
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    
+    <h3 class="archive-title">
+        包含标签
+        <span class="keyword">Python</span>
+        的文章
+    </h3>
+    
+
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/">记一次celery worker hang debug</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2019年7月9日
+        </date>
+        
+        <div class="post-content">
+            记一次celery worker hang debug  【写在前面】： 本文最终并没有debug出为什么卡住，虽然换了种方案解决了问题。
  引入celery是为了调用京东api来做发货行为，以便提供给电商业务下快递单，然而在这个过程中，踩了一些坑（此文大概是2018年底的记录）
 最初的配置，使用supervisor来管理celery进程，并且在代码更新之后，使用supervisorctl restart {$APP_NAME}来更新代码（celery并不支持gracefully reload，也暂时没有用其他更优雅的方案，待更深入的测试）
 发现问题 线上的celery总是一段时间之后，就没有接受新的请求，celery beat还在发消息，python代码也在发消息存到broker(redis)里面，但消息一直没被消费
-debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? S 2018 0:03 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.pyenv/versions/ems-admin-api/bin/celery -A settings beat -s /tmp/celerybeat-schedule --pidfile= -l info www-data 10004 0.1 0.6 162456 53804 ? S Jan02 4:12 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.pyenv/versions/ems-admin-api/bin/celery -A settings worker --autoscale=8,4 -l info www-data 18317 0.0 0.6 173032 56280 ? S Jan03 0:04 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.
-    </div>
-  </div>
-</div>
-
+debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? S 2018 0:03 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.pyenv/versions/ems-admin-api/bin/celery -A settings beat -s /tmp/celerybeat-schedule --pidfile= -l info www-data 10004 0.1 0.6 162456 53804 ? S Jan02 4:12 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.pyenv/versions/ems-admin-api/bin/celery -A settings worker --autoscale=8,4 -l info www-data 18317 0.0 0.6 173032 56280 ? S Jan03 0:04 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.……
+            <p class="readmore"><a href="https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/">阅读全文</a></p>
         </div>
-      
-        <div class="relative w-100  mb4 bg-white">
-          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">Posts</span>
-    <h1 class="f3 near-black">
-      <a href="https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="link black dim">
-        pyenv使用指南
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      背景 之前使用venv，大部分情况下并没有什么不好，配合virtualenvwrapper，用起来倒也顺手，如果没有Python版本切换需求的话。
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">pyenv使用指南</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2018年12月28日
+        </date>
+        
+        <div class="post-content">
+            背景 之前使用venv，大部分情况下并没有什么不好，配合virtualenvwrapper，用起来倒也顺手，如果没有Python版本切换需求的话。
 日常开发机器使用的python是最新版，logging的时候，使用了f&rsquo;i am a {var}&lsquo;这种format语法，而这个特性是Python 3.6之后才有的，于是上线之后凉凉= = （生产环境的机器是Ubuntu 16.04，仅使用apt管理Python版本，于是装的版本实际上是3.5.2）
 既然吃了一回亏，那么就赶紧解决问题。。。
  题外话：貌似在Python的benchmark中，3.5、3.6、3.7中性能最差也是3.5，于是，抽空将生产机器改成用pyenv来管理版本
- 食用步骤  参考pyenv-installer进行安装和配置 直接装需要的Python版本啦，比如pyenv install 3.7.1 如果安装过程中有任何问题，参考common build problems 如果安装也成功了，那么希望更改当前shell环境的Python版本来替换掉系统的版本，可以使用pyenv global 3.7.1  virtualenv使用  使用指定的Python版本创建虚拟环境pyenv virtualenv 3.7.1 myenv 启用虚拟环境 pyenv activate myenv 退出虚拟环境 source deactivate 进入项目目录自动启用虚拟环境，离开项目目录退出虚拟环境，需要在项目目录内 pyenv local myenv，会创建一个.python-version的文件，内容为虚拟环境的名字，则为myenv  done, 希望食用快乐~
-    </div>
-  </div>
-</div>
-
+ 食用步骤  参考pyenv-installer进行安装和配置 直接装需要的Python版本啦，比如pyenv install 3.7.1 如果安装过程中有任何问题，参考common build problems 如果安装也成功了，那么希望更改当前shell环境的Python版本来替换掉系统的版本，可以使用pyenv global 3.7.1  virtualenv使用  使用指定的Python版本创建虚拟环境pyenv virtualenv 3.7.1 myenv 启用虚拟环境 pyenv activate myenv 退出虚拟环境 source deactivate 进入项目目录自动启用虚拟环境，离开项目目录退出虚拟环境，需要在项目目录内 pyenv local myenv，会创建一个.python-version的文件，内容为虚拟环境的名字，则为myenv  done, 希望食用快乐~……
+            <p class="readmore"><a href="https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">阅读全文</a></p>
         </div>
-      
-        <div class="relative w-100  mb4 bg-white">
-          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">Posts</span>
-    <h1 class="f3 near-black">
-      <a href="https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/" class="link black dim">
-        Python日期相关知识及处理
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      Python的日期实现/Linux发行版一般使用(tz database/Olson database)1
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/">Python日期相关知识及处理</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2018年11月27日
+        </date>
+        
+        <div class="post-content">
+            Python的日期实现/Linux发行版一般使用(tz database/Olson database)1
 Python中的日期 一般使用pytz库来操作日期
 django中的时区使用问题 https://docs.djangoproject.com/en/2.1/topics/i18n/timezones/
 Time zone support is disabled by default. To enable it, set USE_TZ = True in your settings file. Time zone support uses pytz, which is installed when you install Django.
-When support for time zones is enabled, Django stores datetime information in UTC in the database, uses time-zone-aware datetime objects internally, and translates them to the end user’s time zone in templates and forms.
-    </div>
-  </div>
-</div>
-
+When support for time zones is enabled, Django stores datetime information in UTC in the database, uses time-zone-aware datetime objects internally, and translates them to the end user’s time zone in templates and forms.……
+            <p class="readmore"><a href="https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/">阅读全文</a></p>
         </div>
-      
-        <div class="relative w-100  mb4 bg-white">
-          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">Posts</span>
-    <h1 class="f3 near-black">
-      <a href="https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="link black dim">
-        pipenv使用指南
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">pipenv使用指南</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            1年1月1日
+        </date>
+        
+        <div class="post-content">
+            pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
 有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
 确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
 然后其他安装命令，以pipenv代替pip
@@ -184,45 +148,156 @@ When support for time zones is enabled, Django stores datetime information in UT
 默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
 位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
 如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
-然后就可以愉快地选择pipenv的虚拟环境了
-    </div>
-  </div>
-</div>
-
+然后就可以愉快地选择pipenv的虚拟环境了……
+            <p class="readmore"><a href="https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">阅读全文</a></p>
         </div>
-      
-    </section>
-  </div>
-
-    </main>
-    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
-  <div class="flex justify-between">
-  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://sukikaka.cc/" >
-    &copy;  Writing Bugs 2020 
-  </a>
-    <div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div>
-  </div>
-</footer>
+    </article>
+    
 
     
 
-  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
 
 
-  </body>
+
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2020 <a href="https://sukikaka.cc/">Writing Bugs By </a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+
+
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='//www.google.com/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://sukikaka.cc/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+    
+    <section class="widget">
+        <h3 class="widget-title">最近文章</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://sukikaka.cc/2020/08/18/migrate-to-hugo/" title="Migrate to Hugo">Migrate to Hugo</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/" title="Vue项目使用Nginx部署并发布到子目录">Vue项目使用Nginx部署并发布到子目录</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/" title="记一次celery worker hang debug">记一次celery worker hang debug</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" title="pyenv使用指南">pyenv使用指南</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/" title="Python日期相关知识及处理">Python日期相关知识及处理</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2017/10/30/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80-%E7%AB%AF%E5%8F%A3%E8%BF%9E%E9%80%9A%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%8E%92%E6%9F%A5/" title="网络基础-端口连通测试与排查">网络基础-端口连通测试与排查</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2017/08/31/%E4%B8%80%E7%A7%8D%E6%9C%89%E8%B6%A3%E7%9A%84%E6%B5%8B%E8%AF%95%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F/" title="一种有趣的测试环境部署方式">一种有趣的测试环境部署方式</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2017/08/29/android%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%8A%80%E8%83%BD%E5%9B%BE%E8%B0%B1/" title="Android应用开发技能图谱">Android应用开发技能图谱</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2017/08/24/php%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5/" title="PHP错误排查">PHP错误排查</a>
+    </li>
+    
+    <li>
+        <a href="https://sukikaka.cc/2017/05/27/%E4%BD%BF%E7%94%A8gitlab-webhooks%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/" title="使用Gitlab Webhooks自动部署代码">使用Gitlab Webhooks自动部署代码</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">分类</h3>
+<ul class="widget-list">
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">标签</h3>
+<div class="tagcloud">
+    
+    <a href="https://sukikaka.cc/tags/android/">Android</a>
+    
+    <a href="https://sukikaka.cc/tags/docker/">docker</a>
+    
+    <a href="https://sukikaka.cc/tags/nginx/">Nginx</a>
+    
+    <a href="https://sukikaka.cc/tags/php/">PHP</a>
+    
+    <a href="https://sukikaka.cc/tags/python/">Python</a>
+    
+    <a href="https://sukikaka.cc/tags/router/">Router</a>
+    
+    <a href="https://sukikaka.cc/tags/ubnt/">Ubnt</a>
+    
+    <a href="https://sukikaka.cc/tags/vue/">Vue</a>
+    
+    <a href="https://sukikaka.cc/tags/%E7%BD%91%E7%BB%9C/">网络</a>
+    
+    <a href="https://sukikaka.cc/tags/%E8%BF%90%E7%BB%B4/">运维</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">其它</h3>
+        <ul class="widget-list">
+            <li><a href="https://sukikaka.cc/index.xml">文章 RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>
