@@ -6,10 +6,19 @@
     <description>Recent content on Writing Bugs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 11 Jul 2019 15:56:06 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 18 Aug 2020 16:23:18 +0800</lastBuildDate>
     
 	<atom:link href="https://sukikaka.cc/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Migrate to Hugo</title>
+      <link>https://sukikaka.cc/2020/08/18/migrate-to-hugo/</link>
+      <pubDate>Tue, 18 Aug 2020 16:23:18 +0800</pubDate>
+      
+      <guid>https://sukikaka.cc/2020/08/18/migrate-to-hugo/</guid>
+      <description>2017年搭建的hexo博客，因腾讯云服务器准备过期，这几年用下来觉得，似乎没什么必要续费云服务器，况且人老了对npm这种恶心东西没什么好感，因此决定换用hugo，以此记录。</description>
+    </item>
     
     <item>
       <title>Vue项目使用Nginx部署并发布到子目录</title>

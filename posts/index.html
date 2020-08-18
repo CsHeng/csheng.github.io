@@ -35,7 +35,7 @@
 <meta property="og:description" content="" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://sukikaka.cc/posts/" />
-<meta property="og:updated_time" content="2019-07-11T15:56:06+00:00" />
+<meta property="og:updated_time" content="2020-08-18T16:23:18+08:00" />
 <meta itemprop="name" content="Posts">
 <meta itemprop="description" content="">
 <meta name="twitter:card" content="summary"/>
@@ -97,6 +97,21 @@
   <article class="pa3 pa4-ns nested-copy-line-height nested-img">
     <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
     <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://sukikaka.cc/2020/08/18/migrate-to-hugo/" class="link black dim">
+        Migrate to Hugo
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      2017年搭建的hexo博客，因腾讯云服务器准备过期，这几年用下来觉得，似乎没什么必要续费云服务器，况且人老了对npm这种恶心东西没什么好感，因此决定换用hugo，以此记录。
+    </div>
+  </div>
+</div>
+</div>
       
         <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
   <div class="bg-white mb3 pa4 gray overflow-hidden">
@@ -271,21 +286,6 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
     </h1>
     <div class="nested-links f5 lh-copy nested-copy-line-height">
       为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp; git push &amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;&amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户  将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释
-    </div>
-  </div>
-</div>
-</div>
-      
-        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
-  <div class="bg-white mb3 pa4 gray overflow-hidden">
-    <span class="f6 db">Posts</span>
-    <h1 class="f3 near-black">
-      <a href="https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/" class="link black dim">
-        打造基于Docker的Ubuntu 14.04 &#43; PHP-FPM &#43; Nginx运行环境
-      </a>
-    </h1>
-    <div class="nested-links f5 lh-copy nested-copy-line-height">
-      准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;&amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。  我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx  现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash  把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo 'extension=mongo.so' &gt; /etc/php5/mods-available/mongo.ini ln -s /etc/php5/mods-available/mongo.ini /etc/php5/fpm/conf.
     </div>
   </div>
 </div>
