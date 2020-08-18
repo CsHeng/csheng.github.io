@@ -49,6 +49,24 @@ debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? 
     </item>
     
     <item>
+      <title>pipenv使用指南</title>
+      <link>https://sukikaka.cc/2019/05/10/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Fri, 10 May 2019 16:00:22 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2019/05/10/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
+有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
+确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
+然后其他安装命令，以pipenv代替pip
+比如pipenv install -r requirements.txt会将pip的依赖文件requirements.txt转换成pipenv的版本管理格式文件Pipfile和Pipfile.lock
+如果是空项目，那么直接pipenv install {third-party-lib}
+默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
+位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
+如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
+然后就可以愉快地选择pipenv的虚拟环境了</description>
+    </item>
+    
+    <item>
       <title>pyenv使用指南</title>
       <link>https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Fri, 28 Dec 2018 16:10:47 +0000</pubDate>
@@ -72,6 +90,37 @@ Python中的日期 一般使用pytz库来操作日期
 django中的时区使用问题 https://docs.djangoproject.com/en/2.1/topics/i18n/timezones/
 Time zone support is disabled by default. To enable it, set USE_TZ = True in your settings file. Time zone support uses pytz, which is installed when you install Django.
 When support for time zones is enabled, Django stores datetime information in UTC in the database, uses time-zone-aware datetime objects internally, and translates them to the end user’s time zone in templates and forms.</description>
+    </item>
+    
+    <item>
+      <title>Ubnt ER-X pppoe定时重新拨号</title>
+      <link>https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</link>
+      <pubDate>Fri, 29 Jun 2018 19:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</guid>
+      <description>为什么需要定时拨号？ 先来看一组数据
+  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
+ 广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
+ 解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
+具体使用命令主要是下面两个：
+ 断开pppoe disconnect interface pppoe0 连接pppoe进行拨号 connect interface pppoe0
+ 那么如何定时去执行呢？
+ ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。） 直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）
+ 所以。。。最后写了个自定义的脚本，再使用系统授权的方式 task-scheduler 来执行这个脚本。
+ 编辑文件: sudo vi /config/scripts/pppoe-redial.sh  #!/bin/bash # 由于connect/disconnect命令都是alias，所以需要使用wrapper run=/opt/vyatta/bin/vyatta-op-cmd-wrapper $run disconnect interface pppoe0 sleep 10 $run connect interface pppoe0 保存～
+ 赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.</description>
+    </item>
+    
+    <item>
+      <title>Nginx配置的一些简单防护</title>
+      <link>https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/</link>
+      <pubDate>Fri, 05 Jan 2018 16:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/</guid>
+      <description>拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
+验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
+下面以test.sukikaka.com为域名来说明：
+server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.sukikaka.com_access.log; error_log /var/log/nginx/test.sukikaka.com_error.log warn; # 拒绝掉各种不希望被bot访问的  if ($http_user_agent ~* &amp;#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot&amp;#34;) { return 403; } # static files  location ~* ^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)$ { access_log off; expires max; } # 这是一个php程序的配置  location ~* .</description>
     </item>
     
     <item>
@@ -153,67 +202,6 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       
       <guid>https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</guid>
       <description>准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;amp;&amp;amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。  我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx  现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash  把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo &#39;extension=mongo.so&#39; &amp;gt; /etc/php5/mods-available/mongo.ini ln -s /etc/php5/mods-available/mongo.ini /etc/php5/fpm/conf.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://sukikaka.cc/1/01/01/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://sukikaka.cc/1/01/01/</guid>
-      <description>VMware ESXi安装LEDE过程记录 折腾前的准备  准备好一个U盘，装好微PE工具箱 直接去VMWare官网下载ESXi，注册账号就可以下载并获得一个序列号，后续用于激活 把VMware ESXi的iso文件丢到刚刚装好PE的U盘ISO目录 从U盘启动，并选择VMware ESXi的ISO文件启动  安装ESXi 安装过程和配置教程太多了，不写了～
-配置ESXi（ESXi需要先开SSH） 我们SSH进去ESXi管理，cd /vmfs/volumes/xxx，找到上传上去的openwrt-koolshare-mod-v2.31-r10822-50aa0525d1-x86-64-combined-squashfs.vmdk文件，使用vmkfstools -i openwrt-koolshare-mod-v2.31-r10822-50aa0525d1-x86-64-combined-squashfs.vmdk lede.vmdk -d thin转化出目标可适用于SCSI硬盘的文件
-ESXi, FUCK YOU NVIDIA! add this line to Windows10.vmx hypervisor.cpuid.v0 = &amp;ldquo;FALSE&amp;rdquo;
- Windows  Anydesk 946028435    </description>
-    </item>
-    
-    <item>
-      <title>Nginx配置的一些简单防护</title>
-      <link>https://sukikaka.cc/1/01/01/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://sukikaka.cc/1/01/01/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/</guid>
-      <description>拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
-验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
-下面以test.sukikaka.com为域名来说明：
-server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.sukikaka.com_access.log; error_log /var/log/nginx/test.sukikaka.com_error.log warn; # 拒绝掉各种不希望被bot访问的  if ($http_user_agent ~* &amp;#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot&amp;#34;) { return 403; } # static files  location ~* ^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)$ { access_log off; expires max; } # 这是一个php程序的配置  location ~* .</description>
-    </item>
-    
-    <item>
-      <title>pipenv使用指南</title>
-      <link>https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
-      <description>pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
-有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
-确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
-然后其他安装命令，以pipenv代替pip
-比如pipenv install -r requirements.txt会将pip的依赖文件requirements.txt转换成pipenv的版本管理格式文件Pipfile和Pipfile.lock
-如果是空项目，那么直接pipenv install {third-party-lib}
-默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
-位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
-如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
-然后就可以愉快地选择pipenv的虚拟环境了</description>
-    </item>
-    
-    <item>
-      <title>Ubnt ER-X pppoe定时重新拨号</title>
-      <link>https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</guid>
-      <description>为什么需要定时拨号？ 先来看一组数据
-  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
- 广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
- 解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
-具体使用命令主要是下面两个：
- 断开pppoe disconnect interface pppoe0 连接pppoe进行拨号 connect interface pppoe0
- 那么如何定时去执行呢？
- ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。） 直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）
- 所以。。。最后写了个自定义的脚本，再使用系统授权的方式 task-scheduler 来执行这个脚本。
- 编辑文件: sudo vi /config/scripts/pppoe-redial.sh  #!/bin/bash # 由于connect/disconnect命令都是alias，所以需要使用wrapper run=/opt/vyatta/bin/vyatta-op-cmd-wrapper $run disconnect interface pppoe0 sleep 10 $run connect interface pppoe0 保存～
- 赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.</description>
     </item>
     
   </channel>

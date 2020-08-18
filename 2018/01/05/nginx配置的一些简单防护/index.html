@@ -6,20 +6,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>pyenv使用指南 | Writing Bugs</title>
-    <meta property="og:title" content="pyenv使用指南 - Writing Bugs">
+    <title>Nginx配置的一些简单防护 | Writing Bugs</title>
+    <meta property="og:title" content="Nginx配置的一些简单防护 - Writing Bugs">
     <meta property="og:type" content="article">
         
-    <meta property="article:published_time" content='2018-12-28T16:10:47&#43;08:00'>
+    <meta property="article:published_time" content='2018-01-05T16:57:47&#43;08:00'>
         
         
-    <meta property="article:modified_time" content='2018-12-28T16:10:47&#43;08:00'>
+    <meta property="article:modified_time" content='2018-01-05T16:57:47&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="pyenv使用指南">
+    <meta name="description" content="Nginx配置的一些简单防护">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
+    <meta property="og:url" content="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
@@ -65,38 +65,73 @@
     
     <article class="post">
         <header>
-            <h1 class="post-title">pyenv使用指南</h1>
+            <h1 class="post-title">Nginx配置的一些简单防护</h1>
         </header>
         <date class="post-meta meta-date">
-            2018年12月28日
+            2018年1月5日
         </date>
         
         
         
         <div class="post-content">
-            <h3 id="背景">背景</h3>
-<p>之前使用venv，大部分情况下并没有什么不好，配合<code>virtualenvwrapper</code>，用起来倒也顺手，如果没有Python版本切换需求的话。</p>
-<p>日常开发机器使用的python是最新版，logging的时候，使用了f&rsquo;i am a {var}&lsquo;这种format语法，而这个特性是Python 3.6之后才有的，于是上线之后凉凉= =
-（生产环境的机器是Ubuntu 16.04，仅使用apt管理Python版本，于是装的版本实际上是3.5.2）</p>
-<p>既然吃了一回亏，那么就赶紧解决问题。。。</p>
-<blockquote>
-<p>题外话：貌似在Python的benchmark中，3.5、3.6、3.7中性能最差也是3.5，于是，抽空将生产机器改成用<code>pyenv</code>来管理版本</p>
-</blockquote>
-<h3 id="食用步骤">食用步骤</h3>
-<ol>
-<li>参考<a href="https://github.com/pyenv/pyenv-installer">pyenv-installer</a>进行安装和配置</li>
-<li>直接装需要的Python版本啦，比如<code>pyenv install 3.7.1</code></li>
-<li>如果安装过程中有任何问题，参考<a href="https://github.com/pyenv/pyenv/wiki/common-build-problems">common build problems</a></li>
-<li>如果安装也成功了，那么希望更改当前shell环境的Python版本来替换掉系统的版本，可以使用<code>pyenv global 3.7.1</code></li>
-</ol>
-<h3 id="virtualenv使用">virtualenv使用</h3>
-<ol>
-<li>使用指定的Python版本创建虚拟环境<code>pyenv virtualenv 3.7.1 myenv</code></li>
-<li>启用虚拟环境 <code>pyenv activate myenv</code></li>
-<li>退出虚拟环境 <code>source deactivate</code></li>
-<li>进入项目目录自动启用虚拟环境，离开项目目录退出虚拟环境，需要在项目目录内 <code>pyenv local myenv</code>，会创建一个<code>.python-version</code>的文件，内容为虚拟环境的名字，则为<code>myenv</code></li>
-</ol>
-<p>done, 希望食用快乐~</p>
+            <p>拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。</p>
+<h3 id="验证server_name">验证server_name</h3>
+<p>首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）</p>
+<p>下面以test.sukikaka.com为域名来说明：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx">
+<span style="color:#66d9ef">server</span> {
+    <span style="color:#f92672">listen</span>      <span style="color:#ae81ff">80</span>;
+    <span style="color:#f92672">server_name</span> <span style="color:#e6db74">test.sukikaka.com</span>;
+
+    <span style="color:#75715e"># 假设我的vhost放这个位置
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">root</span>        <span style="color:#e6db74">/data/vhost/test_sukikaka_com</span>;
+
+    <span style="color:#f92672">index</span>       <span style="color:#e6db74">index.php</span>;
+
+    <span style="color:#f92672">gzip</span>        <span style="color:#66d9ef">on</span>;
+    <span style="color:#f92672">gzip_types</span>  <span style="color:#e6db74">text/plain</span> <span style="color:#e6db74">application/xml</span>;
+    <span style="color:#f92672">gzip_min_length</span> <span style="color:#ae81ff">1000</span>;
+    <span style="color:#f92672">gzip_proxied</span>    <span style="color:#e6db74">no-cache</span> <span style="color:#e6db74">no-store</span> <span style="color:#e6db74">private</span> <span style="color:#e6db74">expired</span> <span style="color:#e6db74">auth</span>;
+
+    <span style="color:#f92672">access_log</span>  <span style="color:#e6db74">/var/log/nginx/test.sukikaka.com_access.log</span>;
+    <span style="color:#f92672">error_log</span>   <span style="color:#e6db74">/var/log/nginx/test.sukikaka.com_error.log</span>     <span style="color:#e6db74">warn</span>;
+
+    <span style="color:#75715e"># 拒绝掉各种不希望被bot访问的
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">if</span> <span style="color:#e6db74">(</span>$http_user_agent ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">&#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo!</span> <span style="color:#e6db74">Slurp|Yahoo!</span> <span style="color:#e6db74">Slurp</span> <span style="color:#e6db74">China|YoudaoBot|Sosospider|Sogou</span> <span style="color:#e6db74">spider|Sogou</span> <span style="color:#e6db74">web</span> <span style="color:#e6db74">spider|MSNBot|ia_archiver|Tomato</span> <span style="color:#e6db74">Bot&#34;)</span> {
+        <span style="color:#f92672">return</span> <span style="color:#ae81ff">403</span>;
+    }
+
+    <span style="color:#75715e"># static files
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)</span>$ {
+        <span style="color:#f92672">access_log</span>   <span style="color:#66d9ef">off</span>;
+        <span style="color:#f92672">expires</span>      <span style="color:#e6db74">max</span>;
+    }
+
+    <span style="color:#75715e"># 这是一个php程序的配置
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">.*.php</span>$ {
+        <span style="color:#f92672">include</span> <span style="color:#e6db74">fastcgi_params</span>;
+        <span style="color:#f92672">fastcgi_param</span> <span style="color:#e6db74">SCRIPT_FILENAME</span> $document_root$fastcgi_script_name;
+        <span style="color:#75715e"># 以sock方式连接或者http
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">fastcgi_pass</span> <span style="color:#e6db74">unix:/var/run/php5-fpm.sock</span>; <span style="color:#75715e"># or 127.0.0.1:9000
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">#fastcgi_pass 127.0.0.1:9000;
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">fastcgi_index</span> <span style="color:#e6db74">index.php</span>;
+    }
+    
+}
+
+</code></pre></div><h3 id="启用default规则">启用default规则</h3>
+<p>这点也很重要，deny掉任何不希望开放的路径，默认错误日志会在/var/log/nginx/error.log文件
+错误具体会体现为<code>access forbidden by rule</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#66d9ef">server</span> {
+    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">80</span> <span style="color:#e6db74">default_server</span>;
+    <span style="color:#f92672">listen</span> <span style="color:#e6db74">[::]:80</span> <span style="color:#e6db74">default_server</span>;
+
+    <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+        <span style="color:#f92672">deny</span> <span style="color:#e6db74">all</span>;
+    }
+}
+
+</code></pre></div><p>基本上做完上面两点，你的网站对应的error log就只剩下比较正常的业务访问错误之类的信息了，其余被nginx拒绝掉的可以在error.log文件体现，如果发现某些IP段尝试访问不同的路径以寻求服务器上面的漏洞，那么可以针对性的ban掉这些IP。</p>
 
         </div>
 
@@ -105,21 +140,12 @@
 
         
 
-<div class="post-archive">
-    <h2>See Also</h2>
-    <ul class="listing">
-        
-        <li><a href="/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/">Python日期相关知识及处理</a></li>
-        
-    </ul>
-</div>
-
 
         <div class="post-meta meta-tags">
             
             <ul class="clearfix">
                 
-                <li><a href='https://sukikaka.cc/tags/python'>Python</a></li>
+                <li><a href='https://sukikaka.cc/tags/nginx'>Nginx</a></li>
                 
             </ul>
             

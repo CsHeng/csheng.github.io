@@ -6,21 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Nginx | Writing Bugs</title>
-    <meta property="og:title" content="Nginx - Writing Bugs">
+    <title>Ubnt ER-X pppoe定时重新拨号 | Writing Bugs</title>
+    <meta property="og:title" content="Ubnt ER-X pppoe定时重新拨号 - Writing Bugs">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2018-06-29T19:57:47&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2018-06-29T19:57:47&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="Nginx">
+    <meta name="description" content="Ubnt ER-X pppoe定时重新拨号">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://sukikaka.cc/tags/nginx/">
+    <meta property="og:url" content="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://sukikaka.cc/tags/nginx/index.xml" title="Writing Bugs" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,60 +63,125 @@
                     
 <div class="res-cons">
     
-    <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Nginx</span>
-        的文章
-    </h3>
-    
-
-    
     <article class="post">
         <header>
-            <h1 class="post-title">
-                <a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">Vue项目使用Nginx部署并发布到子目录</a>
-            </h1>
+            <h1 class="post-title">Ubnt ER-X pppoe定时重新拨号</h1>
         </header>
         <date class="post-meta meta-date">
-            2019年7月11日
+            2018年6月29日
         </date>
         
+        
+        
         <div class="post-content">
-            Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
-对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
-   修改路由：router/index.js，添加base部分的代码。
-function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) + 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: '/'修改为assetsPublicPath: './'
-module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &#39;../dist/index.html&#39;), // Paths  assetsRoot: path.resolve(__dirname, &#39;../dist&#39;), assetsSubDirectory: &#39;static&#39;, assetsPublicPath: &#39;./&#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: '../../'……
-            <p class="readmore"><a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">阅读全文</a></p>
+            <h3 id="为什么需要定时拨号">为什么需要定时拨号？</h3>
+<p>先来看一组数据</p>
+<ol>
+<li>
+<p>从命令<code>sudo cat /var/log/messages | grep local</code>的输出结果来看，IP地址基本上每隔一定时间就发生变化。
+<img src="/images/15302581099592.jpg" alt=""></p>
+</li>
+<li>
+<p>从命令<code>show interface pppoe pppoe0 log</code>里面可以找出类似的日志，大意是电信给我们的路由器发了<code>terminate</code>命令，让我们断开连接。
+<img src="/images/15302583094127.jpg" alt=""></p>
+</li>
+</ol>
+<p>结论也就是：</p>
+<blockquote>
+<p>广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。
+时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵</p>
+</blockquote>
+<h3 id="解决方案">解决方案</h3>
+<p>既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。</p>
+<p>具体使用命令主要是下面两个：</p>
+<blockquote>
+<p>断开pppoe <code>disconnect interface pppoe0</code>
+连接pppoe进行拨号 <code>connect interface pppoe0</code></p>
+</blockquote>
+<p>那么如何定时去执行呢？</p>
+<blockquote>
+<p>ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。）
+直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）</p>
+</blockquote>
+<p>所以。。。最后写了个自定义的脚本，再使用系统授权的方式 <code>task-scheduler</code> 来执行这个脚本。</p>
+<ol>
+<li>编辑文件:
+<code>sudo vi /config/scripts/pppoe-redial.sh</code></li>
+</ol>
+<pre><code>#!/bin/bash
+# 由于connect/disconnect命令都是alias，所以需要使用wrapper
+run=/opt/vyatta/bin/vyatta-op-cmd-wrapper
+$run disconnect interface pppoe0
+sleep 10
+$run connect interface pppoe0
+</code></pre><p>保存～</p>
+<ol start="2">
+<li>
+<p>赋予执行权限
+<code>sudo chmod +x /config/scripts/pppoe-redial.sh</code></p>
+</li>
+<li>
+<p>通过<code>task-scheduler</code>设置定时任务</p>
+</li>
+</ol>
+<pre><code>configure 
+set system task-scheduler task redial crontab-spec '0 3 * * *'  //每天凌晨3点执行，设置格式参考crontab
+set system task-scheduler task redial executable path /config/scripts/pppoe-redial.sh
+commit 
+save
+</code></pre><p>完～</p>
+<p>其实，现在用WEB UI也能配置～
+<img src="/images/15302598117570.jpg" alt=""></p>
+<h3 id="最后的结论">最后的结论</h3>
+<p>不作死就不会死，去买那些TPLINK啊，定时重新拨号点几个UI按钮就完了，哪这么麻烦？</p>
+<h3 id="update">UPDATE</h3>
+<p>经过几天的观察，每天3点准时执行命令，18秒后拨号成功，至此定时重新拨号的问题算是解决了～</p>
+<p><img src="/images/15306204700919.jpg" alt=""></p>
+
+        </div>
+
+        
+
+
+        
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='https://sukikaka.cc/tags/router'>Router</a></li>
+                
+                <li><a href='https://sukikaka.cc/tags/ubnt'>Ubnt</a></li>
+                
+            </ul>
+            
         </div>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">Nginx配置的一些简单防护</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年1月5日
-        </date>
-        
-        <div class="post-content">
-            拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
-验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
-下面以test.sukikaka.com为域名来说明：
-server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.sukikaka.com_access.log; error_log /var/log/nginx/test.sukikaka.com_error.log warn; # 拒绝掉各种不希望被bot访问的  if ($http_user_agent ~* &#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot&#34;) { return 403; } # static files  location ~* ^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)$ { access_log off; expires max; } # 这是一个php程序的配置  location ~* .……
-            <p class="readmore"><a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">阅读全文</a></p>
-        </div>
-    </article>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
     
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sukikaka" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
     
-
-
-
-
-
+    
 </div>
 
                     <footer id="footer">
@@ -135,6 +203,17 @@ server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个�
     </div>
 </footer>
 
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 
 <a id="rocket" href="#top"></a>

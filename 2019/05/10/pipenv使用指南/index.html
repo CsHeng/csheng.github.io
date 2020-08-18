@@ -6,21 +6,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Nginx | Writing Bugs</title>
-    <meta property="og:title" content="Nginx - Writing Bugs">
+    <title>pipenv使用指南 | Writing Bugs</title>
+    <meta property="og:title" content="pipenv使用指南 - Writing Bugs">
     <meta property="og:type" content="article">
         
+    <meta property="article:published_time" content='2019-05-10T16:00:22&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2019-05-10T16:00:22&#43;08:00'>
         
     <meta name="Keywords" content="">
-    <meta name="description" content="Nginx">
+    <meta name="description" content="pipenv使用指南">
         
     <meta name="author" content="">
-    <meta property="og:url" content="https://sukikaka.cc/tags/nginx/">
+    <meta property="og:url" content="https://sukikaka.cc/2019/05/10/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml+xml" href="https://sukikaka.cc/tags/nginx/index.xml" title="Writing Bugs" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -60,60 +63,85 @@
                     
 <div class="res-cons">
     
-    <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Nginx</span>
-        的文章
-    </h3>
-    
-
-    
     <article class="post">
         <header>
-            <h1 class="post-title">
-                <a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">Vue项目使用Nginx部署并发布到子目录</a>
-            </h1>
+            <h1 class="post-title">pipenv使用指南</h1>
         </header>
         <date class="post-meta meta-date">
-            2019年7月11日
+            2019年5月10日
         </date>
         
+        
+        
         <div class="post-content">
-            Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
-对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
-   修改路由：router/index.js，添加base部分的代码。
-function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) + 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: '/'修改为assetsPublicPath: './'
-module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &#39;../dist/index.html&#39;), // Paths  assetsRoot: path.resolve(__dirname, &#39;../dist&#39;), assetsSubDirectory: &#39;static&#39;, assetsPublicPath: &#39;./&#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: '../../'……
-            <p class="readmore"><a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">阅读全文</a></p>
+            <h1 id="pipenv使用指南">pipenv使用指南</h1>
+<p>厌倦了使用<code>virtualenv pyenv</code>的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码</p>
+<p>有时候就单纯想要写点<code>scripts</code>，那么<code>pipenv</code>这个开箱即用的虚拟环境显然更适合</p>
+<p>确保当期不在任何虚拟环境中，或者说在系统的解释器中
+<code>pip install pipenv</code></p>
+<p>然后其他安装命令，以<code>pipenv</code>代替<code>pip</code></p>
+<p>比如<code>pipenv install -r requirements.txt</code>会将<code>pip</code>的依赖文件<code>requirements.txt</code>转换成<code>pipenv</code>的版本管理格式文件<code>Pipfile</code>和<code>Pipfile.lock</code></p>
+<p>如果是空项目，那么直接<code>pipenv install {third-party-lib}</code></p>
+<p>默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理</p>
+<p>位于
+<code>~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}</code></p>
+<p>如果需要在vscode中支持pipenv的话，新增支持<code>pipenv</code>的虚拟目录位置</p>
+<p><img src="/images/15574594897485.jpg" alt=""></p>
+<p>然后就可以愉快地选择pipenv的虚拟环境了</p>
+
+        </div>
+
+        
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">pyenv使用指南</a></li>
+        
+        <li><a href="/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/">Python日期相关知识及处理</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='https://sukikaka.cc/tags/python'>Python</a></li>
+                
+            </ul>
+            
         </div>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">Nginx配置的一些简单防护</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年1月5日
-        </date>
-        
-        <div class="post-content">
-            拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
-验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
-下面以test.sukikaka.com为域名来说明：
-server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.sukikaka.com_access.log; error_log /var/log/nginx/test.sukikaka.com_error.log warn; # 拒绝掉各种不希望被bot访问的  if ($http_user_agent ~* &#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot&#34;) { return 403; } # static files  location ~* ^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)$ { access_log off; expires max; } # 这是一个php程序的配置  location ~* .……
-            <p class="readmore"><a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">阅读全文</a></p>
-        </div>
-    </article>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
     
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sukikaka" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
     
-
-
-
-
-
+    
 </div>
 
                     <footer id="footer">
@@ -135,6 +163,17 @@ server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个�
     </div>
 </footer>
 
+
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
 
 
 <a id="rocket" href="#top"></a>

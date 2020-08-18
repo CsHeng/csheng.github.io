@@ -25,6 +25,24 @@ debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? 
     </item>
     
     <item>
+      <title>pipenv使用指南</title>
+      <link>https://sukikaka.cc/2019/05/10/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Fri, 10 May 2019 16:00:22 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2019/05/10/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
+有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
+确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
+然后其他安装命令，以pipenv代替pip
+比如pipenv install -r requirements.txt会将pip的依赖文件requirements.txt转换成pipenv的版本管理格式文件Pipfile和Pipfile.lock
+如果是空项目，那么直接pipenv install {third-party-lib}
+默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
+位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
+如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
+然后就可以愉快地选择pipenv的虚拟环境了</description>
+    </item>
+    
+    <item>
       <title>pyenv使用指南</title>
       <link>https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
       <pubDate>Fri, 28 Dec 2018 16:10:47 +0000</pubDate>
@@ -48,24 +66,6 @@ Python中的日期 一般使用pytz库来操作日期
 django中的时区使用问题 https://docs.djangoproject.com/en/2.1/topics/i18n/timezones/
 Time zone support is disabled by default. To enable it, set USE_TZ = True in your settings file. Time zone support uses pytz, which is installed when you install Django.
 When support for time zones is enabled, Django stores datetime information in UTC in the database, uses time-zone-aware datetime objects internally, and translates them to the end user’s time zone in templates and forms.</description>
-    </item>
-    
-    <item>
-      <title>pipenv使用指南</title>
-      <link>https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
-      <description>pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
-有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
-确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
-然后其他安装命令，以pipenv代替pip
-比如pipenv install -r requirements.txt会将pip的依赖文件requirements.txt转换成pipenv的版本管理格式文件Pipfile和Pipfile.lock
-如果是空项目，那么直接pipenv install {third-party-lib}
-默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
-位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
-如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
-然后就可以愉快地选择pipenv的虚拟环境了</description>
     </item>
     
   </channel>

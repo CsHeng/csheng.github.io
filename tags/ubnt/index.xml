@@ -6,16 +6,17 @@
     <description>Recent content in Ubnt on Writing Bugs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
+    <lastBuildDate>Fri, 29 Jun 2018 19:57:47 +0000</lastBuildDate>
     
 	<atom:link href="https://sukikaka.cc/tags/ubnt/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Ubnt ER-X pppoe定时重新拨号</title>
-      <link>https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <link>https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</link>
+      <pubDate>Fri, 29 Jun 2018 19:57:47 +0000</pubDate>
       
-      <guid>https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</guid>
+      <guid>https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</guid>
       <description>为什么需要定时拨号？ 先来看一组数据
   从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
  广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
