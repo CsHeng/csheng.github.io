@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Python on Writing Bugs</title>
+    <link>https://sukikaka.cc/tags/python/</link>
+    <description>Recent content in Python on Writing Bugs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 09 Jul 2019 16:00:22 +0000</lastBuildDate>
+    
+	<atom:link href="https://sukikaka.cc/tags/python/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>记一次celery worker hang debug</title>
+      <link>https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/</link>
+      <pubDate>Tue, 09 Jul 2019 16:00:22 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/</guid>
+      <description>记一次celery worker hang debug  【写在前面】： 本文最终并没有debug出为什么卡住，虽然换了种方案解决了问题。
+ 引入celery是为了调用京东api来做发货行为，以便提供给电商业务下快递单，然而在这个过程中，踩了一些坑（此文大概是2018年底的记录）
+最初的配置，使用supervisor来管理celery进程，并且在代码更新之后，使用supervisorctl restart {$APP_NAME}来更新代码（celery并不支持gracefully reload，也暂时没有用其他更优雅的方案，待更深入的测试）
+发现问题 线上的celery总是一段时间之后，就没有接受新的请求，celery beat还在发消息，python代码也在发消息存到broker(redis)里面，但消息一直没被消费
+debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? S 2018 0:03 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.pyenv/versions/ems-admin-api/bin/celery -A settings beat -s /tmp/celerybeat-schedule --pidfile= -l info www-data 10004 0.1 0.6 162456 53804 ? S Jan02 4:12 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.pyenv/versions/ems-admin-api/bin/celery -A settings worker --autoscale=8,4 -l info www-data 18317 0.0 0.6 173032 56280 ? S Jan03 0:04 /home/ubuntu/.pyenv/versions/3.7.1/envs/ems-admin-api/bin/python /home/ubuntu/.</description>
+    </item>
+    
+    <item>
+      <title>pyenv使用指南</title>
+      <link>https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Fri, 28 Dec 2018 16:10:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2018/12/28/pyenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>背景 之前使用venv，大部分情况下并没有什么不好，配合virtualenvwrapper，用起来倒也顺手，如果没有Python版本切换需求的话。
+日常开发机器使用的python是最新版，logging的时候，使用了f&amp;rsquo;i am a {var}&amp;lsquo;这种format语法，而这个特性是Python 3.6之后才有的，于是上线之后凉凉= = （生产环境的机器是Ubuntu 16.04，仅使用apt管理Python版本，于是装的版本实际上是3.5.2）
+既然吃了一回亏，那么就赶紧解决问题。。。
+ 题外话：貌似在Python的benchmark中，3.5、3.6、3.7中性能最差也是3.5，于是，抽空将生产机器改成用pyenv来管理版本
+ 食用步骤  参考pyenv-installer进行安装和配置 直接装需要的Python版本啦，比如pyenv install 3.7.1 如果安装过程中有任何问题，参考common build problems 如果安装也成功了，那么希望更改当前shell环境的Python版本来替换掉系统的版本，可以使用pyenv global 3.7.1  virtualenv使用  使用指定的Python版本创建虚拟环境pyenv virtualenv 3.7.1 myenv 启用虚拟环境 pyenv activate myenv 退出虚拟环境 source deactivate 进入项目目录自动启用虚拟环境，离开项目目录退出虚拟环境，需要在项目目录内 pyenv local myenv，会创建一个.python-version的文件，内容为虚拟环境的名字，则为myenv  done, 希望食用快乐~</description>
+    </item>
+    
+    <item>
+      <title>Python日期相关知识及处理</title>
+      <link>https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/</link>
+      <pubDate>Tue, 27 Nov 2018 14:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/</guid>
+      <description>Python的日期实现/Linux发行版一般使用(tz database/Olson database)1
+Python中的日期 一般使用pytz库来操作日期
+django中的时区使用问题 https://docs.djangoproject.com/en/2.1/topics/i18n/timezones/
+Time zone support is disabled by default. To enable it, set USE_TZ = True in your settings file. Time zone support uses pytz, which is installed when you install Django.
+When support for time zones is enabled, Django stores datetime information in UTC in the database, uses time-zone-aware datetime objects internally, and translates them to the end user’s time zone in templates and forms.</description>
+    </item>
+    
+    <item>
+      <title>pipenv使用指南</title>
+      <link>https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</guid>
+      <description>pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
+有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
+确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
+然后其他安装命令，以pipenv代替pip
+比如pipenv install -r requirements.txt会将pip的依赖文件requirements.txt转换成pipenv的版本管理格式文件Pipfile和Pipfile.lock
+如果是空项目，那么直接pipenv install {third-party-lib}
+默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
+位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
+如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
+然后就可以愉快地选择pipenv的虚拟环境了</description>
+    </item>
+    
+  </channel>
+</rss>

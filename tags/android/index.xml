@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Android on Writing Bugs</title>
+    <link>https://sukikaka.cc/tags/android/</link>
+    <description>Recent content in Android on Writing Bugs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 29 Aug 2017 14:57:47 +0000</lastBuildDate>
+    
+	<atom:link href="https://sukikaka.cc/tags/android/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Android应用开发技能图谱</title>
+      <link>https://sukikaka.cc/2017/08/29/android%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%8A%80%E8%83%BD%E5%9B%BE%E8%B0%B1/</link>
+      <pubDate>Tue, 29 Aug 2017 14:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2017/08/29/android%E5%BA%94%E7%94%A8%E5%BC%80%E5%8F%91%E6%8A%80%E8%83%BD%E5%9B%BE%E8%B0%B1/</guid>
+      <description>工具链   编程语言
+ Java/Kotlin C/C++(NDK方向，源码阅读) SQL(DB) HTML/JS(Hybrid/Web App)    操作系统
+ Linux/macOS/Windows    IDE:
+ Android Studio为主 Eclipse    网络调试
+ 代理请求劫持与分析、重放：Charles/Wireshark/Fiddler 接口请求：Postman    内存分析
+ Eclipse MAT Plugin Android Studio Monitors LeakCanary    综合分析（CPU、Network、Memory、GPU)：
+ Android Studio Monitors    Android Tools
+ Method Tracer ui hierarchy viewer ui automator viewer draw9patch    代码管理</description>
+    </item>
+    
+  </channel>
+</rss>

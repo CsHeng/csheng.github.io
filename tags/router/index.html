@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Router | Writing Bugs</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.74.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+      <link href="/tags/router/index.xml" rel="alternate" type="application/rss+xml" title="Writing Bugs" />
+      <link href="/tags/router/index.xml" rel="feed" type="application/rss+xml" title="Writing Bugs" />
+      
+    
+    
+    <meta property="og:title" content="Router" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sukikaka.cc/tags/router/" />
+
+<meta itemprop="name" content="Router">
+<meta itemprop="description" content="">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Router"/>
+<meta name="twitter:description" content=""/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Writing Bugs
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Router
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="cf pa3 pa4-m pa4-l">
+    <div class="measure-wide-l center f4 lh-copy nested-copy-line-height nested-links nested-img mid-gray">
+      <p>Below you will find pages that utilize the taxonomy term “Router”</p>
+    </div>
+  </article>
+  <div class="mw8 center">    
+    <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100  mb4 bg-white">
+          <div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" class="link black dim">
+        Ubnt ER-X pppoe定时重新拨号
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      为什么需要定时拨号？ 先来看一组数据
+  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
+ 广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
+ 解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
+具体使用命令主要是下面两个：
+ 断开pppoe disconnect interface pppoe0 连接pppoe进行拨号 connect interface pppoe0
+ 那么如何定时去执行呢？
+ ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。） 直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）
+ 所以。。。最后写了个自定义的脚本，再使用系统授权的方式 task-scheduler 来执行这个脚本。
+ 编辑文件: sudo vi /config/scripts/pppoe-redial.sh  #!/bin/bash # 由于connect/disconnect命令都是alias，所以需要使用wrapper run=/opt/vyatta/bin/vyatta-op-cmd-wrapper $run disconnect interface pppoe0 sleep 10 $run connect interface pppoe0 保存～
+ 赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.
+    </div>
+  </div>
+</div>
+
+        </div>
+      
+    </section>
+  </div>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://sukikaka.cc/" >
+    &copy;  Writing Bugs 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

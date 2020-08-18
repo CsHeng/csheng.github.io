@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Writing Bugs</title>
+    <link>https://sukikaka.cc/tags/</link>
+    <description>Recent content in Tags on Writing Bugs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 11 Jul 2019 15:56:06 +0000</lastBuildDate>
+    
+	<atom:link href="https://sukikaka.cc/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Nginx</title>
+      <link>https://sukikaka.cc/tags/nginx/</link>
+      <pubDate>Thu, 11 Jul 2019 15:56:06 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/nginx/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vue</title>
+      <link>https://sukikaka.cc/tags/vue/</link>
+      <pubDate>Thu, 11 Jul 2019 15:56:06 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/vue/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Python</title>
+      <link>https://sukikaka.cc/tags/python/</link>
+      <pubDate>Tue, 09 Jul 2019 16:00:22 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/python/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>网络</title>
+      <link>https://sukikaka.cc/tags/%E7%BD%91%E7%BB%9C/</link>
+      <pubDate>Mon, 30 Oct 2017 16:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/%E7%BD%91%E7%BB%9C/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>运维</title>
+      <link>https://sukikaka.cc/tags/%E8%BF%90%E7%BB%B4/</link>
+      <pubDate>Thu, 31 Aug 2017 14:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/%E8%BF%90%E7%BB%B4/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Android</title>
+      <link>https://sukikaka.cc/tags/android/</link>
+      <pubDate>Tue, 29 Aug 2017 14:57:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/android/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>PHP</title>
+      <link>https://sukikaka.cc/tags/php/</link>
+      <pubDate>Thu, 24 Aug 2017 12:42:47 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/php/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker</title>
+      <link>https://sukikaka.cc/tags/docker/</link>
+      <pubDate>Thu, 25 May 2017 16:41:50 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/docker/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Router</title>
+      <link>https://sukikaka.cc/tags/router/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/router/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ubnt</title>
+      <link>https://sukikaka.cc/tags/ubnt/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/tags/ubnt/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

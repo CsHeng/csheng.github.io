@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Writing Bugs</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.74.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+      <link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="Writing Bugs" />
+      <link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="Writing Bugs" />
+      
+    
+    
+    <meta property="og:title" content="Posts" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://sukikaka.cc/posts/" />
+<meta property="og:updated_time" content="2019-07-11T15:56:06+00:00" />
+<meta itemprop="name" content="Posts">
+<meta itemprop="description" content="">
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content=""/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Writing Bugs
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height nested-img">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+    <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://sukikaka.cc/1/01/01/" class="link black dim">
+        
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      VMware ESXi安装LEDE过程记录 折腾前的准备  准备好一个U盘，装好微PE工具箱 直接去VMWare官网下载ESXi，注册账号就可以下载并获得一个序列号，后续用于激活 把VMware ESXi的iso文件丢到刚刚装好PE的U盘ISO目录 从U盘启动，并选择VMware ESXi的ISO文件启动  安装ESXi 安装过程和配置教程太多了，不写了～
+配置ESXi（ESXi需要先开SSH） 我们SSH进去ESXi管理，cd /vmfs/volumes/xxx，找到上传上去的openwrt-koolshare-mod-v2.31-r10822-50aa0525d1-x86-64-combined-squashfs.vmdk文件，使用vmkfstools -i openwrt-koolshare-mod-v2.31-r10822-50aa0525d1-x86-64-combined-squashfs.vmdk lede.vmdk -d thin转化出目标可适用于SCSI硬盘的文件
+ESXi, FUCK YOU NVIDIA! add this line to Windows10.vmx hypervisor.cpuid.v0 = &ldquo;FALSE&rdquo;
+ Windows  Anydesk 946028435    
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://sukikaka.cc/1/01/01/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" class="link black dim">
+        Nginx配置的一些简单防护
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
+验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
+下面以test.sukikaka.com为域名来说明：
+server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.sukikaka.com_access.log; error_log /var/log/nginx/test.sukikaka.com_error.log warn; # 拒绝掉各种不希望被bot访问的  if ($http_user_agent ~* &#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot&#34;) { return 403; } # static files  location ~* ^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)$ { access_log off; expires max; } # 这是一个php程序的配置  location ~* .
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://sukikaka.cc/1/01/01/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/" class="link black dim">
+        pipenv使用指南
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      pipenv使用指南 厌倦了使用virtualenv pyenv的时候，总是先要创建一个虚拟环境，然后激活虚拟环境再写代码
+有时候就单纯想要写点scripts，那么pipenv这个开箱即用的虚拟环境显然更适合
+确保当期不在任何虚拟环境中，或者说在系统的解释器中 pip install pipenv
+然后其他安装命令，以pipenv代替pip
+比如pipenv install -r requirements.txt会将pip的依赖文件requirements.txt转换成pipenv的版本管理格式文件Pipfile和Pipfile.lock
+如果是空项目，那么直接pipenv install {third-party-lib}
+默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
+位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
+如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
+然后就可以愉快地选择pipenv的虚拟环境了
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" class="link black dim">
+        Ubnt ER-X pppoe定时重新拨号
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      为什么需要定时拨号？ 先来看一组数据
+  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
+ 广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
+ 解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
+具体使用命令主要是下面两个：
+ 断开pppoe disconnect interface pppoe0 连接pppoe进行拨号 connect interface pppoe0
+ 那么如何定时去执行呢？
+ ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。） 直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）
+ 所以。。。最后写了个自定义的脚本，再使用系统授权的方式 task-scheduler 来执行这个脚本。
+ 编辑文件: sudo vi /config/scripts/pppoe-redial.sh  #!/bin/bash # 由于connect/disconnect命令都是alias，所以需要使用wrapper run=/opt/vyatta/bin/vyatta-op-cmd-wrapper $run disconnect interface pppoe0 sleep 10 $run connect interface pppoe0 保存～
+ 赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.
+    </div>
+  </div>
+</div>
+</div>
+      
+    </section>
+<ul class="pagination">
+  <li class="page-item">
+    <a href="/posts/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/posts/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a class="page-link" href="/posts/">1</a>
+  </li>
+  <li class="page-item active">
+    <a class="page-link" href="/posts/page/2/">2</a>
+  </li>
+  <li class="page-item disabled">
+    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+  </li>
+  <li class="page-item">
+    <a href="/posts/page/2/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+  </li>
+</ul>
+
+</article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://sukikaka.cc/" >
+    &copy;  Writing Bugs 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

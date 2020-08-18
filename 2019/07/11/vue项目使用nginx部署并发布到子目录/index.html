@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Vue项目使用Nginx部署并发布到子目录 | Writing Bugs</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.74.3" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Vue项目使用Nginx部署并发布到子目录" />
+<meta property="og:description" content="Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
+对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
+   修改路由：router/index.js，添加base部分的代码。
+function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) &#43; 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: &#39;/&#39;修改为assetsPublicPath: &#39;./&#39;
+module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &#39;../dist/index.html&#39;), // Paths  assetsRoot: path.resolve(__dirname, &#39;../dist&#39;), assetsSubDirectory: &#39;static&#39;, assetsPublicPath: &#39;./&#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: &#39;../../&#39;" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/" />
+<meta property="article:published_time" content="2019-07-11T15:56:06+00:00" />
+<meta property="article:modified_time" content="2019-07-11T15:56:06+00:00" />
+<meta itemprop="name" content="Vue项目使用Nginx部署并发布到子目录">
+<meta itemprop="description" content="Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
+对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
+   修改路由：router/index.js，添加base部分的代码。
+function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) &#43; 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: &#39;/&#39;修改为assetsPublicPath: &#39;./&#39;
+module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &#39;../dist/index.html&#39;), // Paths  assetsRoot: path.resolve(__dirname, &#39;../dist&#39;), assetsSubDirectory: &#39;static&#39;, assetsPublicPath: &#39;./&#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: &#39;../../&#39;">
+<meta itemprop="datePublished" content="2019-07-11T15:56:06+00:00" />
+<meta itemprop="dateModified" content="2019-07-11T15:56:06+00:00" />
+<meta itemprop="wordCount" content="188">
+
+
+
+<meta itemprop="keywords" content="Nginx,Vue," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vue项目使用Nginx部署并发布到子目录"/>
+<meta name="twitter:description" content="Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
+对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
+   修改路由：router/index.js，添加base部分的代码。
+function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) &#43; 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: &#39;/&#39;修改为assetsPublicPath: &#39;./&#39;
+module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &#39;../dist/index.html&#39;), // Paths  assetsRoot: path.resolve(__dirname, &#39;../dist&#39;), assetsSubDirectory: &#39;static&#39;, assetsPublicPath: &#39;./&#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: &#39;../../&#39;"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        Writing Bugs
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/&amp;text=Vue%e9%a1%b9%e7%9b%ae%e4%bd%bf%e7%94%a8Nginx%e9%83%a8%e7%bd%b2%e5%b9%b6%e5%8f%91%e5%b8%83%e5%88%b0%e5%ad%90%e7%9b%ae%e5%bd%95" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/&amp;title=Vue%e9%a1%b9%e7%9b%ae%e4%bd%bf%e7%94%a8Nginx%e9%83%a8%e7%bd%b2%e5%b9%b6%e5%8f%91%e5%b8%83%e5%88%b0%e5%ad%90%e7%9b%ae%e5%bd%95" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Vue项目使用Nginx部署并发布到子目录</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-11T15:56:06Z">July 11, 2019</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><h1 id="vue项目使用nginx部署并发布到子目录">Vue项目使用Nginx部署并发布到子目录</h1>
+<p>默认<code>Vue</code>项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，<code>Vue</code>项目本身的配置，包括<code>Nginx</code>也需要做一些配置修改。</p>
+<h2 id="对vue项目源码的修改">对Vue项目源码的修改</h2>
+<blockquote>
+<p>以下路径以<code>vue-cli</code>常见项目的文件结构来说明。</p>
+</blockquote>
+<ul>
+<li>
+<p>修改路由：<code>router/index.js</code>，添加<code>base</code>部分的代码。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">getAbsolutePath</span> () {
+  <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">path</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">pathname</span>
+  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">substring</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">lastIndexOf</span>(<span style="color:#e6db74">&#39;/&#39;</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)
+}
+  
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">default</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">Router</span>({
+  <span style="color:#a6e22e">mode</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;hash&#39;</span>,
+  <span style="color:#a6e22e">base</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">getAbsolutePath</span>(),
+  <span style="color:#a6e22e">routes</span><span style="color:#f92672">:</span> [...]
+})
+</code></pre></div></li>
+<li>
+<p>修改配置：<code>config/index.js</code> 文件，对于打包路径的定义，只处理<code>build</code>，将<code>assetsPublicPath: '/'</code>修改为<code>assetsPublicPath: './'</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"><span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exports</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">build</span><span style="color:#f92672">:</span> {
+    <span style="color:#75715e">// Template for index.html
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">index</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;../dist/index.html&#39;</span>),
+  
+    <span style="color:#75715e">// Paths
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">assetsRoot</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">path</span>.<span style="color:#a6e22e">resolve</span>(<span style="color:#a6e22e">__dirname</span>, <span style="color:#e6db74">&#39;../dist&#39;</span>),
+    <span style="color:#a6e22e">assetsSubDirectory</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;static&#39;</span>,
+    <span style="color:#a6e22e">assetsPublicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./&#39;</span>,
+    ...
+  }
+}
+  
+</code></pre></div></li>
+<li>
+<p>修改<code>build/utils.js</code>对静态文件的处理，添加<code>publicPath: '../../'</code></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js"> <span style="color:#75715e">// Extract CSS when that option is specified
+</span><span style="color:#75715e"></span>    <span style="color:#75715e">// (which is the case during production build)
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">options</span>.<span style="color:#a6e22e">extract</span>) {
+      <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">ExtractTextPlugin</span>.<span style="color:#a6e22e">extract</span>({
+        <span style="color:#a6e22e">use</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">loaders</span>,
+        <span style="color:#a6e22e">fallback</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;vue-style-loader&#39;</span>,
+        <span style="color:#a6e22e">publicPath</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;../../&#39;</span>
+      })
+    } <span style="color:#66d9ef">else</span> {
+      <span style="color:#66d9ef">return</span> [<span style="color:#e6db74">&#39;vue-style-loader&#39;</span>].<span style="color:#a6e22e">concat</span>(<span style="color:#a6e22e">loaders</span>)
+    }
+  }
+</code></pre></div></li>
+</ul>
+<h2 id="对nginx配置的修改">对Nginx配置的修改</h2>
+<p>当前项目结构如下:</p>
+<pre><code>game
+├── bxfr
+│   ├── index.html
+│   └── static
+│       ├── css
+│       ├── images
+│       ├── img
+│       ├── js
+│       └── mock
+└── fwjt
+    ├── index.html
+    └── static
+        ├── css
+        ├── images
+        ├── img
+        ├── js
+        └── mock
+</code></pre><p>而我们要实现的目的是：使用<code>my.server.name/bxfr/</code>和<code>my.server.name/fwjt/</code>分别访问不同的项目。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#66d9ef">server</span> {
+
+    <span style="color:#f92672">server_name</span> <span style="color:#e6db74">my.server.name</span>;
+
+    <span style="color:#f92672">access_log</span> <span style="color:#e6db74">/var/log/nginx/game.access.log</span>;
+    <span style="color:#f92672">error_log</span> <span style="color:#e6db74">/var/log/nginx/game.error.log</span>;
+
+    <span style="color:#75715e"># 这里root只能放在game这一层，因为下一层的子目录是不固定的
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">root</span> <span style="color:#e6db74">/home/ubuntu/workspace/official-website/game/</span>;
+
+    <span style="color:#75715e"># json文件使用mock来返回静态资源，这个block对于实现本文的目的并非必要
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> ~ <span style="color:#e6db74">\.json$</span> {
+        <span style="color:#f92672">rewrite</span> <span style="color:#e6db74">^/([^/]+).*/api/(.*)</span> <span style="color:#e6db74">/</span>$1/static/mock/$2 <span style="color:#e6db74">break</span>; 
+    }
+
+    <span style="color:#f92672">location</span> <span style="color:#e6db74">@vue</span> {
+        <span style="color:#75715e"># 匹配不含/的首段，目的是拿出bxfr和fwjt
+</span><span style="color:#75715e"></span>        <span style="color:#f92672">rewrite</span> <span style="color:#e6db74">^/([^/]+).*</span> <span style="color:#e6db74">/</span>$1/index.html <span style="color:#e6db74">last</span>;
+    }
+
+    <span style="color:#75715e"># 使用try files来fallback到vue
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
+        <span style="color:#f92672">index</span> <span style="color:#e6db74">index.html</span>;
+        <span style="color:#f92672">try_files</span> $uri $uri/ <span style="color:#e6db74">@vue</span>;
+    }
+
+    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">80</span>;
+    <span style="color:#f92672">...</span>
+
+<span style="color:#960050;background-color:#1e0010">}</span>
+</code></pre></div><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/nginx" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Nginx</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/vue" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Vue</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+        <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "sukikaka" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/1/01/01/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">Nginx配置的一些简单防护</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://sukikaka.cc/" >
+    &copy;  Writing Bugs 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

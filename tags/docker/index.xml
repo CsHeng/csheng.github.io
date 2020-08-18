@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>docker on Writing Bugs</title>
+    <link>https://sukikaka.cc/tags/docker/</link>
+    <description>Recent content in docker on Writing Bugs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 25 May 2017 16:41:50 +0000</lastBuildDate>
+    
+	<atom:link href="https://sukikaka.cc/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>打造基于Docker的Ubuntu 14.04 &#43; PHP-FPM &#43; Nginx运行环境</title>
+      <link>https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</link>
+      <pubDate>Thu, 25 May 2017 16:41:50 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</guid>
+      <description>准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;amp;&amp;amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。  我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx  现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash  把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo &#39;extension=mongo.so&#39; &amp;gt; /etc/php5/mods-available/mongo.ini ln -s /etc/php5/mods-available/mongo.ini /etc/php5/fpm/conf.</description>
+    </item>
+    
+  </channel>
+</rss>

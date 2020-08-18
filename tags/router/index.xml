@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Router on Writing Bugs</title>
+    <link>https://sukikaka.cc/tags/router/</link>
+    <description>Recent content in Router on Writing Bugs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    
+	<atom:link href="https://sukikaka.cc/tags/router/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Ubnt ER-X pppoe定时重新拨号</title>
+      <link>https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://sukikaka.cc/1/01/01/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</guid>
+      <description>为什么需要定时拨号？ 先来看一组数据
+  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
+ 广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
+ 解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
+具体使用命令主要是下面两个：
+ 断开pppoe disconnect interface pppoe0 连接pppoe进行拨号 connect interface pppoe0
+ 那么如何定时去执行呢？
+ ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。） 直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）
+ 所以。。。最后写了个自定义的脚本，再使用系统授权的方式 task-scheduler 来执行这个脚本。
+ 编辑文件: sudo vi /config/scripts/pppoe-redial.sh  #!/bin/bash # 由于connect/disconnect命令都是alias，所以需要使用wrapper run=/opt/vyatta/bin/vyatta-op-cmd-wrapper $run disconnect interface pppoe0 sleep 10 $run connect interface pppoe0 保存～
+ 赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.</description>
+    </item>
+    
+  </channel>
+</rss>
