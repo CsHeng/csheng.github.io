@@ -82,8 +82,8 @@
             Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
 对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
    修改路由：router/index.js，添加base部分的代码。
-function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) + 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: '/'修改为assetsPublicPath: './'
-module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &#39;../dist/index.html&#39;), // Paths  assetsRoot: path.resolve(__dirname, &#39;../dist&#39;), assetsSubDirectory: &#39;static&#39;, assetsPublicPath: &#39;./&#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: '../../'……
+1 2 3 4 5 6 7 8 9 10  function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) + 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })     修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: '/'修改为assetsPublicPath: './'
+1 2 3 4 5 6 7 8 9 10 11 12 13  module.exports = { build: { // Template for index.……
             <p class="readmore"><a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">阅读全文</a></p>
         </div>
     </article>
@@ -102,7 +102,7 @@ module.exports = { build: { // Template for index.html  index: path.resolve(__di
             拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
 验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
 下面以test.sukikaka.com为域名来说明：
-server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.sukikaka.com_access.log; error_log /var/log/nginx/test.sukikaka.com_error.log warn; # 拒绝掉各种不希望被bot访问的  if ($http_user_agent ~* &#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo! Slurp|Yahoo! Slurp China|YoudaoBot|Sosospider|Sogou spider|Sogou web spider|MSNBot|ia_archiver|Tomato Bot&#34;) { return 403; } # static files  location ~* ^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)$ { access_log off; expires max; } # 这是一个php程序的配置  location ~* .……
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41  server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.……
             <p class="readmore"><a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">阅读全文</a></p>
         </div>
     </article>
@@ -119,6 +119,8 @@ server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个�
                     <footer id="footer">
     <div>
         &copy; 2020 <a href="https://sukikaka.cc/">Writing Bugs By </a>
+        
+        | <a rel="nofollow" target="_blank" href="http://www.beian.miit.gov.cn/">粤ICP备17149674号-1</a>
         
     </div>
     <br />

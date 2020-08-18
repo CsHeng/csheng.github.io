@@ -20,8 +20,8 @@
       <description>Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
 对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
    修改路由：router/index.js，添加base部分的代码。
-function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&amp;#39;/&amp;#39;) + 1) } export default new Router({ mode: &amp;#39;hash&amp;#39;, base: getAbsolutePath(), routes: [...] })   修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: &#39;/&#39;修改为assetsPublicPath: &#39;./&#39;
-module.exports = { build: { // Template for index.html  index: path.resolve(__dirname, &amp;#39;../dist/index.html&amp;#39;), // Paths  assetsRoot: path.resolve(__dirname, &amp;#39;../dist&amp;#39;), assetsSubDirectory: &amp;#39;static&amp;#39;, assetsPublicPath: &amp;#39;./&amp;#39;, ... } }   修改build/utils.js对静态文件的处理，添加publicPath: &#39;../../&#39;</description>
+1 2 3 4 5 6 7 8 9 10  function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&amp;#39;/&amp;#39;) + 1) } export default new Router({ mode: &amp;#39;hash&amp;#39;, base: getAbsolutePath(), routes: [...] })     修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: &#39;/&#39;修改为assetsPublicPath: &#39;./&#39;
+1 2 3 4 5 6 7 8 9 10 11 12 13  module.exports = { build: { // Template for index.</description>
     </item>
     
   </channel>

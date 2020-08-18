@@ -78,64 +78,135 @@
 <h3 id="验证server_name">验证server_name</h3>
 <p>首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）</p>
 <p>下面以test.sukikaka.com为域名来说明：</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx">
-<span style="color:#66d9ef">server</span> {
-    <span style="color:#f92672">listen</span>      <span style="color:#ae81ff">80</span>;
-    <span style="color:#f92672">server_name</span> <span style="color:#e6db74">test.sukikaka.com</span>;
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx">
+<span style="color:#000;font-weight:bold">server</span> {
+    <span style="color:#000;font-weight:bold">listen</span>      <span style="color:#099">80</span>;
+    <span style="color:#000;font-weight:bold">server_name</span> <span style="color:#d14">test.sukikaka.com</span>;
 
-    <span style="color:#75715e"># 假设我的vhost放这个位置
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">root</span>        <span style="color:#e6db74">/data/vhost/test_sukikaka_com</span>;
+    <span style="color:#998;font-style:italic"># 假设我的vhost放这个位置
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">root</span>        <span style="color:#d14">/data/vhost/test_sukikaka_com</span>;
 
-    <span style="color:#f92672">index</span>       <span style="color:#e6db74">index.php</span>;
+    <span style="color:#000;font-weight:bold">index</span>       <span style="color:#d14">index.php</span>;
 
-    <span style="color:#f92672">gzip</span>        <span style="color:#66d9ef">on</span>;
-    <span style="color:#f92672">gzip_types</span>  <span style="color:#e6db74">text/plain</span> <span style="color:#e6db74">application/xml</span>;
-    <span style="color:#f92672">gzip_min_length</span> <span style="color:#ae81ff">1000</span>;
-    <span style="color:#f92672">gzip_proxied</span>    <span style="color:#e6db74">no-cache</span> <span style="color:#e6db74">no-store</span> <span style="color:#e6db74">private</span> <span style="color:#e6db74">expired</span> <span style="color:#e6db74">auth</span>;
+    <span style="color:#000;font-weight:bold">gzip</span>        <span style="color:#008080">on</span>;
+    <span style="color:#000;font-weight:bold">gzip_types</span>  <span style="color:#d14">text/plain</span> <span style="color:#d14">application/xml</span>;
+    <span style="color:#000;font-weight:bold">gzip_min_length</span> <span style="color:#099">1000</span>;
+    <span style="color:#000;font-weight:bold">gzip_proxied</span>    <span style="color:#d14">no-cache</span> <span style="color:#d14">no-store</span> <span style="color:#d14">private</span> <span style="color:#d14">expired</span> <span style="color:#d14">auth</span>;
 
-    <span style="color:#f92672">access_log</span>  <span style="color:#e6db74">/var/log/nginx/test.sukikaka.com_access.log</span>;
-    <span style="color:#f92672">error_log</span>   <span style="color:#e6db74">/var/log/nginx/test.sukikaka.com_error.log</span>     <span style="color:#e6db74">warn</span>;
+    <span style="color:#000;font-weight:bold">access_log</span>  <span style="color:#d14">/var/log/nginx/test.sukikaka.com_access.log</span>;
+    <span style="color:#000;font-weight:bold">error_log</span>   <span style="color:#d14">/var/log/nginx/test.sukikaka.com_error.log</span>     <span style="color:#d14">warn</span>;
 
-    <span style="color:#75715e"># 拒绝掉各种不希望被bot访问的
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">if</span> <span style="color:#e6db74">(</span>$http_user_agent ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">&#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo!</span> <span style="color:#e6db74">Slurp|Yahoo!</span> <span style="color:#e6db74">Slurp</span> <span style="color:#e6db74">China|YoudaoBot|Sosospider|Sogou</span> <span style="color:#e6db74">spider|Sogou</span> <span style="color:#e6db74">web</span> <span style="color:#e6db74">spider|MSNBot|ia_archiver|Tomato</span> <span style="color:#e6db74">Bot&#34;)</span> {
-        <span style="color:#f92672">return</span> <span style="color:#ae81ff">403</span>;
+    <span style="color:#998;font-style:italic"># 拒绝掉各种不希望被bot访问的
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">if</span> <span style="color:#d14">(</span><span style="color:#008080">$http_user_agent</span> ~<span style="color:#009926">*</span> <span style="color:#d14">&#34;qihoobot|Baiduspider|Googlebot|Googlebot-Mobile|Googlebot-Image|Mediapartners-Google|Adsbot-Google|Feedfetcher-Google|Yahoo!</span> <span style="color:#d14">Slurp|Yahoo!</span> <span style="color:#d14">Slurp</span> <span style="color:#d14">China|YoudaoBot|Sosospider|Sogou</span> <span style="color:#d14">spider|Sogou</span> <span style="color:#d14">web</span> <span style="color:#d14">spider|MSNBot|ia_archiver|Tomato</span> <span style="color:#d14">Bot&#34;)</span> {
+        <span style="color:#000;font-weight:bold">return</span> <span style="color:#099">403</span>;
     }
 
-    <span style="color:#75715e"># static files
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)</span>$ {
-        <span style="color:#f92672">access_log</span>   <span style="color:#66d9ef">off</span>;
-        <span style="color:#f92672">expires</span>      <span style="color:#e6db74">max</span>;
+    <span style="color:#998;font-style:italic"># static files
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">location</span> ~<span style="color:#009926">*</span> <span style="color:#d14">^.+.(ico|gif|jpg|jpeg|png|css|js|xml|txt|html|htm)</span>$ {
+        <span style="color:#000;font-weight:bold">access_log</span>   <span style="color:#008080">off</span>;
+        <span style="color:#000;font-weight:bold">expires</span>      <span style="color:#d14">max</span>;
     }
 
-    <span style="color:#75715e"># 这是一个php程序的配置
-</span><span style="color:#75715e"></span>    <span style="color:#f92672">location</span> ~<span style="color:#e6db74">*</span> <span style="color:#e6db74">.*.php</span>$ {
-        <span style="color:#f92672">include</span> <span style="color:#e6db74">fastcgi_params</span>;
-        <span style="color:#f92672">fastcgi_param</span> <span style="color:#e6db74">SCRIPT_FILENAME</span> $document_root$fastcgi_script_name;
-        <span style="color:#75715e"># 以sock方式连接或者http
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">fastcgi_pass</span> <span style="color:#e6db74">unix:/var/run/php5-fpm.sock</span>; <span style="color:#75715e"># or 127.0.0.1:9000
-</span><span style="color:#75715e"></span>        <span style="color:#75715e">#fastcgi_pass 127.0.0.1:9000;
-</span><span style="color:#75715e"></span>        <span style="color:#f92672">fastcgi_index</span> <span style="color:#e6db74">index.php</span>;
+    <span style="color:#998;font-style:italic"># 这是一个php程序的配置
+</span><span style="color:#998;font-style:italic"></span>    <span style="color:#000;font-weight:bold">location</span> ~<span style="color:#009926">*</span> <span style="color:#d14">.*.php</span>$ {
+        <span style="color:#000;font-weight:bold">include</span> <span style="color:#d14">fastcgi_params</span>;
+        <span style="color:#000;font-weight:bold">fastcgi_param</span> <span style="color:#d14">SCRIPT_FILENAME</span> <span style="color:#008080">$document_root$fastcgi_script_name</span>;
+        <span style="color:#998;font-style:italic"># 以sock方式连接或者http
+</span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">fastcgi_pass</span> <span style="color:#d14">unix:/var/run/php5-fpm.sock</span>; <span style="color:#998;font-style:italic"># or 127.0.0.1:9000
+</span><span style="color:#998;font-style:italic"></span>        <span style="color:#998;font-style:italic">#fastcgi_pass 127.0.0.1:9000;
+</span><span style="color:#998;font-style:italic"></span>        <span style="color:#000;font-weight:bold">fastcgi_index</span> <span style="color:#d14">index.php</span>;
     }
     
 }
 
-</code></pre></div><h3 id="启用default规则">启用default规则</h3>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="启用default规则">启用default规则</h3>
 <p>这点也很重要，deny掉任何不希望开放的路径，默认错误日志会在/var/log/nginx/error.log文件
 错误具体会体现为<code>access forbidden by rule</code></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#66d9ef">server</span> {
-    <span style="color:#f92672">listen</span> <span style="color:#ae81ff">80</span> <span style="color:#e6db74">default_server</span>;
-    <span style="color:#f92672">listen</span> <span style="color:#e6db74">[::]:80</span> <span style="color:#e6db74">default_server</span>;
+<div class="highlight"><div style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-nginx" data-lang="nginx"><span style="color:#000;font-weight:bold">server</span> {
+    <span style="color:#000;font-weight:bold">listen</span> <span style="color:#099">80</span> <span style="color:#d14">default_server</span>;
+    <span style="color:#000;font-weight:bold">listen</span> <span style="color:#d14">[::]:80</span> <span style="color:#d14">default_server</span>;
 
-    <span style="color:#f92672">location</span> <span style="color:#e6db74">/</span> {
-        <span style="color:#f92672">deny</span> <span style="color:#e6db74">all</span>;
+    <span style="color:#000;font-weight:bold">location</span> <span style="color:#d14">/</span> {
+        <span style="color:#000;font-weight:bold">deny</span> <span style="color:#d14">all</span>;
     }
 }
 
-</code></pre></div><p>基本上做完上面两点，你的网站对应的error log就只剩下比较正常的业务访问错误之类的信息了，其余被nginx拒绝掉的可以在error.log文件体现，如果发现某些IP段尝试访问不同的路径以寻求服务器上面的漏洞，那么可以针对性的ban掉这些IP。</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>基本上做完上面两点，你的网站对应的error log就只剩下比较正常的业务访问错误之类的信息了，其余被nginx拒绝掉的可以在error.log文件体现，如果发现某些IP段尝试访问不同的路径以寻求服务器上面的漏洞，那么可以针对性的ban掉这些IP。</p>
 
         </div>
 
         
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>原文作者：</strong><a rel="author" href="https://sukikaka.cc/">Writing Bugs</a></li>
+        <li style="word-break:break-all"><strong>原文链接：</strong><a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/</a></li>
+        <li><strong>版权声明：</strong>本作品采用<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>进行许可，非商业转载请注明出处（作者，原文链接），商业转载请联系作者获得授权。</li>
+    </ul>
+</div>
+<br/>
+
 
 
         
@@ -180,6 +251,8 @@
                     <footer id="footer">
     <div>
         &copy; 2020 <a href="https://sukikaka.cc/">Writing Bugs By </a>
+        
+        | <a rel="nofollow" target="_blank" href="http://www.beian.miit.gov.cn/">粤ICP备17149674号-1</a>
         
     </div>
     <br />
