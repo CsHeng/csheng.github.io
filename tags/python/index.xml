@@ -6,11 +6,7 @@
     <description>Recent content in Python on Writing Bugs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 09 Jul 2019 16:00:22 +0000</lastBuildDate>
-    
-	<atom:link href="https://sukikaka.cc/tags/python/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 09 Jul 2019 16:00:22 +0000</lastBuildDate><atom:link href="https://sukikaka.cc/tags/python/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>记一次celery worker hang debug</title>
       <link>https://sukikaka.cc/2019/07/09/%E8%AE%B0%E4%B8%80%E6%AC%A1celery-worker-hang-debug/</link>

@@ -6,11 +6,7 @@
     <description>Recent content in Ubnt on Writing Bugs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 29 Jun 2018 19:57:47 +0000</lastBuildDate>
-    
-	<atom:link href="https://sukikaka.cc/tags/ubnt/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Fri, 29 Jun 2018 19:57:47 +0000</lastBuildDate><atom:link href="https://sukikaka.cc/tags/ubnt/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ubnt ER-X pppoe定时重新拨号</title>
       <link>https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</link>

@@ -6,10 +6,16 @@
     <description>Recent content in 网络 on Writing Bugs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 30 Oct 2017 16:57:47 +0000</lastBuildDate>
-    
-	<atom:link href="https://sukikaka.cc/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
-    
+    <lastBuildDate>Tue, 19 Jan 2021 11:27:19 +0800</lastBuildDate><atom:link href="https://sukikaka.cc/tags/%E7%BD%91%E7%BB%9C/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>通过 DHCP Options 下发路由解决同局域网内服务器互访的效率问题</title>
+      <link>https://sukikaka.cc/2021/01/19/%E9%80%9A%E8%BF%87-dhcp-options-%E4%B8%8B%E5%8F%91%E8%B7%AF%E7%94%B1%E8%A7%A3%E5%86%B3%E5%90%8C%E5%B1%80%E5%9F%9F%E7%BD%91%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BA%92%E8%AE%BF%E7%9A%84%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98/</link>
+      <pubDate>Tue, 19 Jan 2021 11:27:19 +0800</pubDate>
+      
+      <guid>https://sukikaka.cc/2021/01/19/%E9%80%9A%E8%BF%87-dhcp-options-%E4%B8%8B%E5%8F%91%E8%B7%AF%E7%94%B1%E8%A7%A3%E5%86%B3%E5%90%8C%E5%B1%80%E5%9F%9F%E7%BD%91%E5%86%85%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%BA%92%E8%AE%BF%E7%9A%84%E6%95%88%E7%8E%87%E9%97%AE%E9%A2%98/</guid>
+      <description>背景  局域网 Kubernetes 测试服务器的具有公网(1.2.3.4)、局域网(10.0.0.10)双网卡 日常需求较多需要从局域网内/公网环境通过域名访问测试服务器（同时还有部分正式环境的大数据服务）  旧方案  公网环境 DNS 配置gw.sukikaka.com A 1.2.3.4 局域网环境 DNS Server 10.0.0.1 配置劫持成 gw.sukikaka.com A 10.0.0.10 局域网环境通过 DHCP Server 配置 DHCP Options 6,10.0.0.1,223.5.5.5 来达到下发 DNS Server 的目的 而以前用内网DNS服务器添加劫持，将gw.sukikaka.com A 10.0.0.10从而解决解析的问题，但是其他测试环境域名通过CNAME将解析指向gw.sukikaka.com时，并不能将CNAME再次顺利解析到10.0.0.10   存在的问题
+ 需要将DNS Server设置成内网指定的DNS Server 10.0.0.10，否则无法劫持 增减域名需要在公网DNS Server设置解析，也需要在局域网DNS Server设置解析 另外，由于公司不少同事是使用科学上网，而这些科学上网很难要求他们会自己将DNS Server设置成内网的Server，所以最终导致占用 Kubernetes 公网带宽，测试环境体验不好  访问测试环境的数据会经过主路由器 NAT 成 default route 的公网地址，然后再访问Kubernetes的公网地址NAT回来，然后处理完成之后再反向回来局域网内的请求客户端，ip packet 增加了多余的NAT     新方案  公网环境 DNS 配置gw.sukikaka.com A 1.</description>
+    </item>
     
     <item>
       <title>网络基础-端口连通测试与排查</title>
