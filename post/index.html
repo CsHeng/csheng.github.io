@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
 
-    <title>Vue | Writing Bugs</title>
-    <meta property="og:title" content="Vue - Writing Bugs">
+    <title>Posts | Writing Bugs</title>
+    <meta property="og:title" content="Posts - Writing Bugs">
     <meta property="og:type" content="article">
         
         
     <meta name="Keywords" content="">
-    <meta name="description" content="Vue">
+    <meta name="description" content="Posts">
         
     <meta name="author" content="CsHeng">
-    <meta property="og:url" content="https://sukikaka.cc/tags/vue/">
+    <meta property="og:url" content="https://sukikaka.cc/post/">
     <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
-    <link rel="alternate" type="application/rss+xml" href="https://sukikaka.cc/tags/vue/index.xml" title="Writing Bugs" />
+    <link rel="alternate" type="application/rss+xml" href="https://sukikaka.cc/post/index.xml" title="Writing Bugs" />
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     
@@ -47,7 +47,7 @@
             </div>
             <div>
                 <nav id="nav-menu" class="clearfix">
-                    <a class="" href="https://sukikaka.cc/">首页</a>
+                    <a class="current" href="https://sukikaka.cc/">首页</a>
                     
                 </nav>
             </div>
@@ -63,35 +63,29 @@
                     
 <div class="res-cons">
     
-    <h3 class="archive-title">
-        包含标签
-        <span class="keyword">Vue</span>
-        的文章
-    </h3>
-    
-
     
     <article class="post">
         <header>
             <h1 class="post-title">
-                <a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">Vue项目使用Nginx部署并发布到子目录</a>
+                <a href="https://sukikaka.cc/post/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
             </h1>
         </header>
         <date class="post-meta meta-date">
-            2019年7月11日
+            2021年5月13日
         </date>
         
         <div class="post-content">
-            Vue项目使用Nginx部署并发布到子目录 默认Vue项目是以根目录来发布的，但是我们要有时候希望以子目录来做发布，那么就需要做一些修改，Vue项目本身的配置，包括Nginx也需要做一些配置修改。
-对Vue项目源码的修改  以下路径以vue-cli常见项目的文件结构来说明。
-   修改路由：router/index.js，添加base部分的代码。
-1 2 3 4 5 6 7 8 9 10  function getAbsolutePath () { let path = location.pathname return path.substring(0, path.lastIndexOf(&#39;/&#39;) + 1) } export default new Router({ mode: &#39;hash&#39;, base: getAbsolutePath(), routes: [...] })     修改配置：config/index.js 文件，对于打包路径的定义，只处理build，将assetsPublicPath: '/'修改为assetsPublicPath: './'
-1 2 3 4 5 6 7 8 9 10 11 12 13  module.exports = { build: { // Template for index.……
-            <p class="readmore"><a href="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">阅读全文</a></p>
+            机房托管的血和泪 前言  为了解决日益增长的计算、存储、测试环境的需求，结合我们办公室小机房优异的散热、电量、网络条件(详情如下)，因此在2021年3月份决定将公司的13台Dell R720服务器搬迁到机房进行托管，以期获得稳定的使用条件。
+  散热：开了16度然而还能热出汗的空调 供电：预期下午5点断电早上11点先尝试性进行预演 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let's Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从3月初决定要搞事，一遍采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整两个月。
+ 硬件玄学  二手硬件不稳定什么的，对于我们这种垃圾佬当然不是什么问题啦！插电，开机~~~
+  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本直接开机，硬件自检通过，重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&hellip;..    PVE集群之坑   原有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
+ 旧的集群：2台1U服务器原本已经安装了PVE并且有虚拟机提供测试环境数据，正在服役 新的集群：2台新机器直接安装PVE操作系统，组建集群    集群管理的坑
+ 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策才算是明确了再次备案不影响原先接入备案的问题。……
         </div>
+        <p class="readmore"><a href="https://sukikaka.cc/post/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/">阅读全文</a></p>
     </article>
     
-
+    
     
 
 
@@ -148,7 +142,7 @@
 <ul class="widget-list">
     
     <li>
-        <a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
+        <a href="https://sukikaka.cc/post/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
     </li>
     
     <li>
