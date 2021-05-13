@@ -35,7 +35,7 @@ debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? 
 默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
 位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
 如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
-然后就可以愉快地选择pipenv的虚拟环境了</description>
+ 然后就可以愉快地选择pipenv的虚拟环境了</description>
     </item>
     
     <item>

@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 
     <title>Vue项目使用Nginx部署并发布到子目录 | Writing Bugs</title>
     <meta property="og:title" content="Vue项目使用Nginx部署并发布到子目录 - Writing Bugs">
@@ -20,12 +21,14 @@
         
     <meta name="author" content="CsHeng">
     <meta property="og:url" content="https://sukikaka.cc/2019/07/11/vue%E9%A1%B9%E7%9B%AE%E4%BD%BF%E7%94%A8nginx%E9%83%A8%E7%BD%B2%E5%B9%B6%E5%8F%91%E5%B8%83%E5%88%B0%E5%AD%90%E7%9B%AE%E5%BD%95/">
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
 
     <link rel="stylesheet" href='/css/normalize.css'>
     <link rel="stylesheet" href='/css/style.css'>
     <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
+    
+    
     
     
     
@@ -101,7 +104,7 @@
   <span style="color:#000;font-weight:bold">let</span> path <span style="color:#000;font-weight:bold">=</span> location.pathname
   <span style="color:#000;font-weight:bold">return</span> path.substring(<span style="color:#099">0</span>, path.lastIndexOf(<span style="color:#d14">&#39;/&#39;</span>) <span style="color:#000;font-weight:bold">+</span> <span style="color:#099">1</span>)
 }
-  
+
 <span style="color:#000;font-weight:bold">export</span> <span style="color:#000;font-weight:bold">default</span> <span style="color:#000;font-weight:bold">new</span> Router({
   mode<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;hash&#39;</span>,
   base<span style="color:#000;font-weight:bold">:</span> getAbsolutePath(),
@@ -132,16 +135,16 @@
 <pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-js" data-lang="js">module.exports <span style="color:#000;font-weight:bold">=</span> {
   build<span style="color:#000;font-weight:bold">:</span> {
     <span style="color:#998;font-style:italic">// Template for index.html
-</span><span style="color:#998;font-style:italic"></span>    index<span style="color:#000;font-weight:bold">:</span> path.resolve(__dirname, <span style="color:#d14">&#39;../dist/index.html&#39;</span>),
-  
+</span><span style="color:#998;font-style:italic"></span>    index<span style="color:#000;font-weight:bold">:</span> path.resolve(<span style="color:#099">__</span>dirname, <span style="color:#d14">&#39;../dist/index.html&#39;</span>),
+
     <span style="color:#998;font-style:italic">// Paths
-</span><span style="color:#998;font-style:italic"></span>    assetsRoot<span style="color:#000;font-weight:bold">:</span> path.resolve(__dirname, <span style="color:#d14">&#39;../dist&#39;</span>),
+</span><span style="color:#998;font-style:italic"></span>    assetsRoot<span style="color:#000;font-weight:bold">:</span> path.resolve(<span style="color:#099">__</span>dirname, <span style="color:#d14">&#39;../dist&#39;</span>),
     assetsSubDirectory<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;static&#39;</span>,
     assetsPublicPath<span style="color:#000;font-weight:bold">:</span> <span style="color:#d14">&#39;./&#39;</span>,
     ...
   }
 }
-  
+
 </code></pre></td></tr></table>
 </div>
 </div></li>
@@ -296,9 +299,9 @@
             
             <ul class="clearfix">
                 
-                <li><a href='https://sukikaka.cc/tags/nginx'>Nginx</a></li>
+                <li><a href='/tags/nginx'>Nginx</a></li>
                 
-                <li><a href='https://sukikaka.cc/tags/vue'>Vue</a></li>
+                <li><a href='/tags/vue'>Vue</a></li>
                 
             </ul>
             
@@ -334,7 +337,7 @@
     <div>
         &copy; 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
         
-        | <a rel="nofollow" target="_blank" href="http://www.beian.miit.gov.cn/">粤ICP备17149674号</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号</a>
         
     </div>
     <br />
@@ -362,7 +365,6 @@
             };
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
-
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
@@ -434,14 +436,14 @@
     
 
     <section class="widget">
-        <h3 class="widget-title">分类</h3>
+        <h3 class="widget-title"><a href='/categories/'>分类</a></h3>
 <ul class="widget-list">
     
 </ul>
     </section>
 
     <section class="widget">
-        <h3 class="widget-title">标签</h3>
+        <h3 class="widget-title"><a href='/tags/'>标签</a></h3>
 <div class="tagcloud">
     
     <a href="https://sukikaka.cc/tags/android/">Android</a>
