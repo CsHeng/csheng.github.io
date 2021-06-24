@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>使用Gitlab Webhooks自动部署代码 | Writing Bugs</title>
     <meta property="og:title" content="使用Gitlab Webhooks自动部署代码 - Writing Bugs">
@@ -29,6 +31,8 @@
 
     
     
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
     
     
     
@@ -75,6 +79,11 @@
         </date>
         
         
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
         
         <div class="post-content">
             <h3 id="为什么要用webhooks来更新代码">为什么要用Webhooks来更新代码</h3>
@@ -97,7 +106,9 @@
 <li>假定项目代码放在<code>/www</code>下面，且Owner是git，那么执行<code>sudo mkdir /www &amp;&amp; sudo chown -R git:git /www</code></li>
 <li>由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：<code>ps aux | grep php-fpm</code>， 确认<code>www-data</code>为我们的运行用户
 
-        <img class="mx-auto" alt="" src="/images/14974977972484.jpg" />   
+        <a data-fancybox="gallery" href="/images/14974977972484.jpg">
+            <img class="mx-auto" alt="" src="/images/14974977972484.jpg" />
+        </a>
     </li>
 <li>将<code>www-data</code>加到<code>git</code>用户组：<code>sudo usermod -aG git www-data</code></li>
 <li>给<code>www-data</code>用户不需要密码就能切换到<code>git</code>用户，并且用git用户的身份执行<code>/usr/bin/git</code>命令，修改sudoers：<code>sudo vim /etc/sudoers</code>，添加一行配置：<code>www-data ALL=(git) NOPASSWD: /usr/bin/git</code></li>
@@ -114,19 +125,25 @@
 </li>
 </ul>
 <p>
-        <img class="mx-auto" alt="" src="/images/14975101202455.jpg" />   
+        <a data-fancybox="gallery" href="/images/14975101202455.jpg">
+            <img class="mx-auto" alt="" src="/images/14975101202455.jpg" />
+        </a>
     </p>
 <ul>
 <li>项目文件夹权限设置：</li>
 </ul>
 <p>
-        <img class="mx-auto" alt="" src="/images/14975097737137.jpg" />   
+        <a data-fancybox="gallery" href="/images/14975097737137.jpg">
+            <img class="mx-auto" alt="" src="/images/14975097737137.jpg" />
+        </a>
     </p>
 <ul>
 <li>项目生成的日志文件权限情况：</li>
 </ul>
 <p>
-        <img class="mx-auto" alt="" src="/images/14975098281305.jpg" />   
+        <a data-fancybox="gallery" href="/images/14975098281305.jpg">
+            <img class="mx-auto" alt="" src="/images/14975098281305.jpg" />
+        </a>
     </p>
 <ul>
 <li>nginx配置参考</li>
@@ -164,7 +181,9 @@
 </li>
 </ul>
 <p>
-        <img class="mx-auto" alt="" src="/images/14975132155185.jpg" />   
+        <a data-fancybox="gallery" href="/images/14975132155185.jpg">
+            <img class="mx-auto" alt="" src="/images/14975132155185.jpg" />
+        </a>
     </p>
 
         </div>
@@ -231,9 +250,9 @@
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
+        &copy; 2017 - 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
         
-        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号-1</a>
         
     </div>
     <br />
@@ -260,12 +279,14 @@
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
 
 
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
 
@@ -285,6 +306,10 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
+    </li>
     
     <li>
         <a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
@@ -320,10 +345,6 @@
     
     <li>
         <a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" title="Ubnt ER-X pppoe定时重新拨号">Ubnt ER-X pppoe定时重新拨号</a>
-    </li>
-    
-    <li>
-        <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" title="Nginx配置的一些简单防护">Nginx配置的一些简单防护</a>
     </li>
     
 </ul>

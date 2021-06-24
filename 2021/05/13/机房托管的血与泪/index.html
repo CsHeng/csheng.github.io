@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>机房托管的血与泪 | Writing Bugs</title>
     <meta property="og:title" content="机房托管的血与泪 - Writing Bugs">
@@ -29,6 +31,8 @@
 
     
     
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
     
     
     
@@ -75,6 +79,11 @@
         </date>
         
         
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">|<span id="busuanzi_value_page_pv"></span><span>
+                    阅读</span></span>
+        </div>
+        
         
         <div class="post-content">
             <h2 id="前言">前言</h2>
@@ -83,13 +92,13 @@
 </blockquote>
 <ul>
 <li>散热：开了16度然而还能热出汗的空调</li>
-<li>供电：预期下午5点断电早上11点先尝试性进行预演</li>
+<li>供电：物业预期下午5点断电早上11点先进行预演，时不时跳一下闸什么的</li>
 <li>机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网</li>
 <li>潘多拉的域名玩法：电信专线并不封堵<code>TCP/443</code>，当年（2017）使用<code>TCP/443</code>并配合<code>DNS-01 challenge</code>验证域名所有权，然后使用<code>Let's Encrypt</code>来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务</li>
 </ul>
 <h2 id="极其漫长的踩坑之路">极其漫长的踩坑之路</h2>
 <blockquote>
-<p>从3月初决定要搞事，一遍采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整两个月。</p>
+<p>从过年后3月初决定要搞事，开始采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整跨了两个月。</p>
 </blockquote>
 <h3 id="硬件玄学">硬件玄学</h3>
 <blockquote>
@@ -109,7 +118,7 @@
 </li>
 <li>迁移原有服务器(Dell R420)内硬盘到新的机器
 <ul>
-<li>顺利的：基本直接开机，硬件自检通过，重新配置阵列卡，开机完成硬件升级</li>
+<li>顺利的：基本能够直接开机，只要硬件自检通过，然后重新配置阵列卡，开机完成硬件升级</li>
 <li>失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&hellip;..</li>
 </ul>
 </li>
@@ -117,7 +126,7 @@
 <h3 id="pve集群之坑">PVE集群之坑</h3>
 <ul>
 <li>
-<p>原有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）</p>
+<p>从已有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）</p>
 <ul>
 <li>旧的集群：2台1U服务器原本已经安装了PVE并且有虚拟机提供测试环境数据，正在服役</li>
 <li>新的集群：2台新机器直接安装PVE操作系统，组建集群</li>
@@ -142,7 +151,7 @@
 </ul>
 <h3 id="域名备案问题">域名备案问题</h3>
 <blockquote>
-<p>这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策才算是明确了再次备案不影响原先接入备案的问题。</p>
+<p>这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策，才算是明确了再次备案不影响原先接入备案的问题。</p>
 </blockquote>
 <ul>
 <li>遵循接入方备案原则：同一个域名，接入阿里云需要做一次备案，接入另外一家服务商需要再做一次备案。</li>
@@ -150,9 +159,9 @@
 </ul>
 <h3 id="文网文问题">文网文问题</h3>
 <blockquote>
-<p>这是一个更迷的问题，同样只存在于大局域网国家，多次申诉折腾无果，只能按照某<code>福报厂</code>要求对网站内容进行大幅度修改，去掉<code>游戏</code>相关字眼（<strong>只要网站内容有游戏，必须要求文网文证件</strong>）的内容。</p>
+<p>这是一个更迷的问题，同样只存在于大局域网国家，多次申诉、联系客服折腾无果，只能按照某<code>福报厂</code>要求对网站内容进行大幅度修改，去掉<code>游戏</code>相关字眼（<strong>只要网站内容有游戏，必须要求文网文证件</strong>）的内容。</p>
 </blockquote>
-<p>一个国家有关部门已经不签发的证书，却在审核备案的的初审部分需要审核，投诉无门。</p>
+<p>一个国家有关部门已经不签发的证书，却在审核备案的的初审部分需要审核，投诉无门，喝喝</p>
 <h3 id="网络架构调整">网络架构调整</h3>
 <ul>
 <li>原网络拓扑：公司和服务器之间是局域网(<code>192.168.0.0/21</code>），服务器局域网连接是通过连接同一个交换机并<code>uplink</code>到公司主路由来实现访问的，几个提供对外访问的具有公网的服务器则是另外一个专线交换机连接</li>
@@ -277,9 +286,9 @@
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
+        &copy; 2017 - 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
         
-        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号-1</a>
         
     </div>
     <br />
@@ -306,12 +315,14 @@
                 }
             };
     </script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script><script src="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
 
 
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
 
 
 
@@ -331,6 +342,10 @@
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
+    </li>
     
     <li>
         <a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
@@ -366,10 +381,6 @@
     
     <li>
         <a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" title="Ubnt ER-X pppoe定时重新拨号">Ubnt ER-X pppoe定时重新拨号</a>
-    </li>
-    
-    <li>
-        <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" title="Nginx配置的一些简单防护">Nginx配置的一些简单防护</a>
     </li>
     
 </ul>

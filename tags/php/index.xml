@@ -15,7 +15,7 @@
       <guid>https://sukikaka.cc/2017/08/24/php%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5/</guid>
       <description>服务器配置  工欲善其事必先利其器，如果都不知道什么时候可能会产生日志，不知道哪里能查到错误日志，那么谈何排查？
   启用PHP错误配置[PHP程序运行错误日志]: /etc/php/*/fpm/php.ini （以FPM为例，cli同理）  log_errors = On error_log = /tmp/php_errors.log  启用fpm errors[这个是FPM本身的错误日志，不是服务的PHP程序的错误日志]： /etc/php/*/fpm/php-fpm.ini  error_log = /var/log/php-fpm.log  启用FPM workers slowlog/errors: /etc/php//fpm/pool.d/.conf  ; 因为PHP程序是以fpm worker的形式运行的，所以要获得输出需要启用worker output catch_workers_output = yes ; PHP 程序代码慢查询日志，比如代码中连接了数据库做查询，当超过一定时间则增加一条slowlog slowlog = /var/log/$pool.log.slow ; 此处定义多长时间为慢查询，一般5s已经很丧心病狂了 request_slowlog_timeout = 5s 修改完之后，使用sudo php-fpm -t做测试，一般会有的错误是，错误日志指定的路径不对，或者没权限写入，修改成其他可以写入的路径即可
-一些错误示例   FPM Slow log，该优化代码啦！！！   PHP Error，该修BUG啦！！！   NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
+一些错误示例   FPM Slow log，该优化代码啦！！！    PHP Error，该修BUG啦！！！    NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
  </description>
     </item>
     

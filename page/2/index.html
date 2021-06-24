@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Writing Bugs | </title>
     <meta property="og:title" content="Writing Bugs | ">
@@ -23,6 +25,8 @@
 
     
     
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
     
     
     
@@ -65,6 +69,25 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" title="Nginx配置的一些简单防护">Nginx配置的一些简单防护</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2018年1月5日
+        </date>
+        
+        <div class="post-content">
+            拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
+验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
+下面以test.sukikaka.com为域名来说明：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41  server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.……
+        </div>
+        <p class="readmore"><a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">阅读全文</a></p>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://sukikaka.cc/2017/10/30/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80-%E7%AB%AF%E5%8F%A3%E8%BF%9E%E9%80%9A%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%8E%92%E6%9F%A5/" title="网络基础-端口连通测试与排查">网络基础-端口连通测试与排查</a>
             </h1>
         </header>
@@ -75,12 +98,11 @@
         <div class="post-content">
             本文围绕端口讲解网络流量流向中可能出现的各种问题，水平有限，仅当入门篇。
 访问端：怎么确认目标设备对应端口已经开启 常规方法：
- tcpping 端口open状态 telnet 端口可连接 其他tcp方案 本地端口没有被运营商or其他工具封锁，比如邮件的25端口 如果以上外部方案都发现并不能连接到目标端口，该那么怎么排查问题   SSH登录目标主机 假设我们想了解为什么80端口没连通，先确认80端口是否正在服务  sudo netstat -anp | grep :80    从结果可以看出主机已经开启了80端口，且服务的程序是Nginx
+ tcpping 端口open状态 telnet 端口可连接 其他tcp方案 本地端口没有被运营商or其他工具封锁，比如邮件的25端口 如果以上外部方案都发现并不能连接到目标端口，该那么怎么排查问题   SSH登录目标主机 假设我们想了解为什么80端口没连通，先确认80端口是否正在服务  sudo netstat -anp | grep :80     从结果可以看出主机已经开启了80端口，且服务的程序是Nginx
  被访问端：如何确认有请求访问 以下假设访问端和被访问端使用公网访问。
-  ifconfig找出公网流量交换的网卡，比如下图我的是eth0   监听网卡eth0上的80端口的流量 sudo tcpdump -i eth0 port 80
-    开启监听   另外一台机器使用tcpping来访问tcpping 45.34.167.101 80   观察tcpdump结果    结果是连通的，可以清晰看到tcp3次握手的sequence code
- 接下来使用sudo service nginx stop关停nginx的80端口，然后再次做tcpping    端口已经关闭了，tcpdump依然可以看到类似上面的tcp握手请求
- 被访问端：怎么确认端口是可达的（未被封锁）   那么假设防火墙拦截对80端口的请求呢？我们使用iptables对INPUT的流量全部采取DROP处理 sudo iptables -A INPUT -p tcp --dport 80 -j DROP……
+  ifconfig找出公网流量交换的网卡，比如下图我的是eth0    监听网卡eth0上的80端口的流量 sudo tcpdump -i eth0 port 80
+    开启监听    另外一台机器使用tcpping来访问tcpping 45.34.167.101 80    观察tcpdump结果     结果是连通的，可以清晰看到tcp3次握手的sequence code
+ 接下来使用sudo service nginx stop关停nginx的80端口，然后再次做tcpping     端口已经关闭了，tcpdump依然可以看到类似上面的tcp握手请求……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2017/10/30/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80-%E7%AB%AF%E5%8F%A3%E8%BF%9E%E9%80%9A%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%8E%92%E6%9F%A5/">阅读全文</a></p>
     </article>
@@ -147,7 +169,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
         <div class="post-content">
             服务器配置  工欲善其事必先利其器，如果都不知道什么时候可能会产生日志，不知道哪里能查到错误日志，那么谈何排查？
   启用PHP错误配置[PHP程序运行错误日志]: /etc/php/*/fpm/php.ini （以FPM为例，cli同理）  log_errors = On error_log = /tmp/php_errors.log  启用fpm errors[这个是FPM本身的错误日志，不是服务的PHP程序的错误日志]： /etc/php/*/fpm/php-fpm.ini  error_log = /var/log/php-fpm.log  启用FPM workers slowlog/errors: /etc/php//fpm/pool.d/.conf  ; 因为PHP程序是以fpm worker的形式运行的，所以要获得输出需要启用worker output catch_workers_output = yes ; PHP 程序代码慢查询日志，比如代码中连接了数据库做查询，当超过一定时间则增加一条slowlog slowlog = /var/log/$pool.log.slow ; 此处定义多长时间为慢查询，一般5s已经很丧心病狂了 request_slowlog_timeout = 5s 修改完之后，使用sudo php-fpm -t做测试，一般会有的错误是，错误日志指定的路径不对，或者没权限写入，修改成其他可以写入的路径即可
-一些错误示例   FPM Slow log，该优化代码啦！！！   PHP Error，该修BUG啦！！！   NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
+一些错误示例   FPM Slow log，该优化代码啦！！！    PHP Error，该修BUG啦！！！    NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
  ……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2017/08/24/php%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5/">阅读全文</a></p>
@@ -164,7 +186,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
         </date>
         
         <div class="post-content">
-            为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp; git push &amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;&amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户  将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释……
+            为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp; git push &amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;&amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户   将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2017/05/27/%E4%BD%BF%E7%94%A8gitlab-webhooks%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/">阅读全文</a></p>
     </article>
@@ -180,7 +202,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
         </date>
         
         <div class="post-content">
-            准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;&amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。   我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx   现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash   把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo 'extension=mongo.so' &gt; /etc/php5/mods-available/mongo.ini ln -s /etc/php5/mods-available/mongo.……
+            准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;&amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。    我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx    现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash    把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo 'extension=mongo.……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/">阅读全文</a></p>
     </article>
@@ -215,9 +237,9 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
+        &copy; 2017 - 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
         
-        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号-1</a>
         
     </div>
     <br />
@@ -241,6 +263,8 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
 
 
 
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
 
 
 
@@ -259,6 +283,10 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
+    </li>
     
     <li>
         <a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
@@ -294,10 +322,6 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
     
     <li>
         <a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" title="Ubnt ER-X pppoe定时重新拨号">Ubnt ER-X pppoe定时重新拨号</a>
-    </li>
-    
-    <li>
-        <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" title="Nginx配置的一些简单防护">Nginx配置的一些简单防护</a>
     </li>
     
 </ul>

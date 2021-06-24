@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
 
     <title>Posts | Writing Bugs</title>
     <meta property="og:title" content="Posts - Writing Bugs">
@@ -26,6 +28,8 @@
 
     
     
+    
+        <link href="https://cdn.bootcdn.net/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" rel="stylesheet">
     
     
     
@@ -67,6 +71,28 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年6月24日
+        </date>
+        
+        <div class="post-content">
+            背景  我们总共有13台服务器，1个24口交换机（没有路由器），仅购买了两个公网IP，也就是说仅有两台服务器可以直接连通公网（全配置为全转发路由器），而其他机器得通过NAT来访问公网。
+ 问题  存在的问题：托管在机房的服务器由于是二手硬件，难免会偶尔直接崩溃无法开机。。。而我们没有实际上的路由器，若网关服务器炸了，作为网络内需要通过NAT来上网的机器，该如何自动切换到备用网关呢？
+ 解决思路  由于我们并不是一台服务器上面多条物理网线，所以没办法使用单台服务器内的网口上下线事件来作为切换通知 所以解决方案是：那部分需要做NAT的机器，通过自身定时检测是否能通过网关访问公网，若不能则切换为备用网关
+ 前提条件  两台能分配到公网的机器开启全路由模式  内核允许转发 iptables允许转发   公司主路由(openwrt 系统)和托管机房服务器通过 Zerotier 组网，并且两台公网服务器分别分配到 zerotier ip 172.16.200.1 和 172.16.200.2  解决步骤  增加ping包的目标路由表、ping指定网络接口，可以在不影响现有网络运行的情况下达到定向检测网络接口可用性  ping -I $NIC -c 2 -W $PING_TIMEOUT $REMOTE_IP &gt; /dev/null # 通过$NIC网络接口发出对$REMOTE_IP的ping包，数量2个，若超过超时时间$PING_TIMEOUT(seconds)则认为是失败，&gt; /dev/null 不输出ping命令的结果到控制台 PING_RESULT=$? # 通过获取上一次命令执行成功的结果，成功为0，失败为1
+  检测主网关和备用网关可用性，若主网关可用则优先使用主网关 添加crontab任务，每分钟执行一次判断以达到动态切换作用           xxx.sh &gt; /tmp/route_failover.log              实现切换的脚本参考（适用于Linux服务器）……
+        </div>
+        <p class="readmore"><a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
             </h1>
         </header>
@@ -76,11 +102,11 @@
         
         <div class="post-content">
             前言  为了解决日益增长的计算、存储、测试环境的需求，结合我们办公室小机房优异的散热、电量、网络条件(详情如下)，因此在2021年3月份决定将公司的13台Dell R720服务器搬迁到机房进行托管，以期获得稳定的使用条件。
-  散热：开了16度然而还能热出汗的空调 供电：预期下午5点断电早上11点先尝试性进行预演 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let's Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从3月初决定要搞事，一遍采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整两个月。
+  散热：开了16度然而还能热出汗的空调 供电：物业预期下午5点断电早上11点先进行预演，时不时跳一下闸什么的 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let's Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从过年后3月初决定要搞事，开始采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整跨了两个月。
  硬件玄学  二手硬件不稳定什么的，对于我们这种垃圾佬当然不是什么问题啦！插电，开机~~~
-  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本直接开机，硬件自检通过，重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&hellip;..    PVE集群之坑   原有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
+  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本能够直接开机，只要硬件自检通过，然后重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&hellip;..    PVE集群之坑   从已有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
  旧的集群：2台1U服务器原本已经安装了PVE并且有虚拟机提供测试环境数据，正在服役 新的集群：2台新机器直接安装PVE操作系统，组建集群    集群管理的坑
- 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策才算是明确了再次备案不影响原先接入备案的问题。……
+ 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策，才算是明确了再次备案不影响原先接入备案的问题。……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/">阅读全文</a></p>
     </article>
@@ -192,7 +218,7 @@ debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? 
 默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
 位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
 如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
- 然后就可以愉快地选择pipenv的虚拟环境了……
+  然后就可以愉快地选择pipenv的虚拟环境了……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2019/05/10/pipenv%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/">阅读全文</a></p>
     </article>
@@ -255,7 +281,7 @@ When support for time zones is enabled, Django stores datetime information in UT
         
         <div class="post-content">
             为什么需要定时拨号？ 先来看一组数据
-  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
+  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。    从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。    结论也就是：
  广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
  解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
 具体使用命令主要是下面两个：
@@ -267,27 +293,6 @@ When support for time zones is enabled, Django stores datetime information in UT
  赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.……
         </div>
         <p class="readmore"><a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/">阅读全文</a></p>
-    </article>
-    
-    
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" title="Nginx配置的一些简单防护">Nginx配置的一些简单防护</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年1月5日
-        </date>
-        
-        <div class="post-content">
-            拿到一台服务器之后，不管是用一键包还是正常软件包管理安装，一些简单的安全配置还是必要的。
-验证server_name 首先需要验证server_name，因为IP和域名是一对多的关系，除非针对性攻击，否则一般是用IP+端口来尝试扫描服务器上面运行的网站和服务以找出一些通用的漏洞。（脚本小子最爱）
-下面以test.sukikaka.com为域名来说明：
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41  server { listen 80; server_name test.sukikaka.com; # 假设我的vhost放这个位置  root /data/vhost/test_sukikaka_com; index index.php; gzip on; gzip_types text/plain application/xml; gzip_min_length 1000; gzip_proxied no-cache no-store private expired auth; access_log /var/log/nginx/test.……
-        </div>
-        <p class="readmore"><a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/">阅读全文</a></p>
     </article>
     
     
@@ -321,9 +326,9 @@ When support for time zones is enabled, Django stores datetime information in UT
 
                     <footer id="footer">
     <div>
-        &copy; 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
+        &copy; 2017 - 2021 <a href="https://sukikaka.cc/">Writing Bugs By CsHeng</a>
         
-        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号</a>
+        | <a rel="nofollow" target="_blank" href="http://beian.miit.gov.cn/">粤ICP备17149674号-1</a>
         
     </div>
     <br />
@@ -347,6 +352,8 @@ When support for time zones is enabled, Django stores datetime information in UT
 
 
 
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
 
 
 
@@ -365,6 +372,10 @@ When support for time zones is enabled, Django stores datetime information in UT
     <section class="widget">
         <h3 class="widget-title">最近文章</h3>
 <ul class="widget-list">
+    
+    <li>
+        <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
+    </li>
     
     <li>
         <a href="https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/" title="机房托管的血与泪">机房托管的血与泪</a>
@@ -400,10 +411,6 @@ When support for time zones is enabled, Django stores datetime information in UT
     
     <li>
         <a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" title="Ubnt ER-X pppoe定时重新拨号">Ubnt ER-X pppoe定时重新拨号</a>
-    </li>
-    
-    <li>
-        <a href="https://sukikaka.cc/2018/01/05/nginx%E9%85%8D%E7%BD%AE%E7%9A%84%E4%B8%80%E4%BA%9B%E7%AE%80%E5%8D%95%E9%98%B2%E6%8A%A4/" title="Nginx配置的一些简单防护">Nginx配置的一些简单防护</a>
     </li>
     
 </ul>

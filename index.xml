@@ -6,7 +6,20 @@
     <description>Recent content on Writing Bugs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 13 May 2021 16:26:21 +0800</lastBuildDate><atom:link href="https://sukikaka.cc/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 24 Jun 2021 11:49:04 +0800</lastBuildDate><atom:link href="https://sukikaka.cc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Linux 动态切换路由表</title>
+      <link>https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/</link>
+      <pubDate>Thu, 24 Jun 2021 11:49:04 +0800</pubDate>
+      
+      <guid>https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/</guid>
+      <description>背景  我们总共有13台服务器，1个24口交换机（没有路由器），仅购买了两个公网IP，也就是说仅有两台服务器可以直接连通公网（全配置为全转发路由器），而其他机器得通过NAT来访问公网。
+ 问题  存在的问题：托管在机房的服务器由于是二手硬件，难免会偶尔直接崩溃无法开机。。。而我们没有实际上的路由器，若网关服务器炸了，作为网络内需要通过NAT来上网的机器，该如何自动切换到备用网关呢？
+ 解决思路  由于我们并不是一台服务器上面多条物理网线，所以没办法使用单台服务器内的网口上下线事件来作为切换通知 所以解决方案是：那部分需要做NAT的机器，通过自身定时检测是否能通过网关访问公网，若不能则切换为备用网关
+ 前提条件  两台能分配到公网的机器开启全路由模式  内核允许转发 iptables允许转发   公司主路由(openwrt 系统)和托管机房服务器通过 Zerotier 组网，并且两台公网服务器分别分配到 zerotier ip 172.16.200.1 和 172.16.200.2  解决步骤  增加ping包的目标路由表、ping指定网络接口，可以在不影响现有网络运行的情况下达到定向检测网络接口可用性  ping -I $NIC -c 2 -W $PING_TIMEOUT $REMOTE_IP &amp;gt; /dev/null # 通过$NIC网络接口发出对$REMOTE_IP的ping包，数量2个，若超过超时时间$PING_TIMEOUT(seconds)则认为是失败，&amp;gt; /dev/null 不输出ping命令的结果到控制台 PING_RESULT=$? # 通过获取上一次命令执行成功的结果，成功为0，失败为1
+  检测主网关和备用网关可用性，若主网关可用则优先使用主网关 添加crontab任务，每分钟执行一次判断以达到动态切换作用           xxx.sh &amp;gt; /tmp/route_failover.log              实现切换的脚本参考（适用于Linux服务器）</description>
+    </item>
+    
     <item>
       <title>机房托管的血与泪</title>
       <link>https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/</link>
@@ -14,11 +27,11 @@
       
       <guid>https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/</guid>
       <description>前言  为了解决日益增长的计算、存储、测试环境的需求，结合我们办公室小机房优异的散热、电量、网络条件(详情如下)，因此在2021年3月份决定将公司的13台Dell R720服务器搬迁到机房进行托管，以期获得稳定的使用条件。
-  散热：开了16度然而还能热出汗的空调 供电：预期下午5点断电早上11点先尝试性进行预演 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let&#39;s Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从3月初决定要搞事，一遍采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整两个月。
+  散热：开了16度然而还能热出汗的空调 供电：物业预期下午5点断电早上11点先进行预演，时不时跳一下闸什么的 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let&#39;s Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从过年后3月初决定要搞事，开始采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整跨了两个月。
  硬件玄学  二手硬件不稳定什么的，对于我们这种垃圾佬当然不是什么问题啦！插电，开机~~~
-  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本直接开机，硬件自检通过，重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&amp;hellip;..    PVE集群之坑   原有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
+  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本能够直接开机，只要硬件自检通过，然后重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&amp;hellip;..    PVE集群之坑   从已有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
  旧的集群：2台1U服务器原本已经安装了PVE并且有虚拟机提供测试环境数据，正在服役 新的集群：2台新机器直接安装PVE操作系统，组建集群    集群管理的坑
- 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策才算是明确了再次备案不影响原先接入备案的问题。</description>
+ 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策，才算是明确了再次备案不影响原先接入备案的问题。</description>
     </item>
     
     <item>
@@ -85,7 +98,7 @@ debug过程  找出celery worker的pid，  www-data 6329 0.0 0.6 157228 50640 ? 
 默认将会为你创建当前目录加随机字母组成的虚拟环境，后续直接管理
 位于 ~/.local/share/virtualenvs/{pwd_basename}-{random_stuff}
 如果需要在vscode中支持pipenv的话，新增支持pipenv的虚拟目录位置
- 然后就可以愉快地选择pipenv的虚拟环境了</description>
+  然后就可以愉快地选择pipenv的虚拟环境了</description>
     </item>
     
     <item>
@@ -121,7 +134,7 @@ When support for time zones is enabled, Django stores datetime information in UT
       
       <guid>https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/</guid>
       <description>为什么需要定时拨号？ 先来看一组数据
-  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。   从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。   结论也就是：
+  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。    从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。    结论也就是：
  广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
  解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
 具体使用命令主要是下面两个：
@@ -153,12 +166,11 @@ When support for time zones is enabled, Django stores datetime information in UT
       <guid>https://sukikaka.cc/2017/10/30/%E7%BD%91%E7%BB%9C%E5%9F%BA%E7%A1%80-%E7%AB%AF%E5%8F%A3%E8%BF%9E%E9%80%9A%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%8E%92%E6%9F%A5/</guid>
       <description>本文围绕端口讲解网络流量流向中可能出现的各种问题，水平有限，仅当入门篇。
 访问端：怎么确认目标设备对应端口已经开启 常规方法：
- tcpping 端口open状态 telnet 端口可连接 其他tcp方案 本地端口没有被运营商or其他工具封锁，比如邮件的25端口 如果以上外部方案都发现并不能连接到目标端口，该那么怎么排查问题   SSH登录目标主机 假设我们想了解为什么80端口没连通，先确认80端口是否正在服务  sudo netstat -anp | grep :80    从结果可以看出主机已经开启了80端口，且服务的程序是Nginx
+ tcpping 端口open状态 telnet 端口可连接 其他tcp方案 本地端口没有被运营商or其他工具封锁，比如邮件的25端口 如果以上外部方案都发现并不能连接到目标端口，该那么怎么排查问题   SSH登录目标主机 假设我们想了解为什么80端口没连通，先确认80端口是否正在服务  sudo netstat -anp | grep :80     从结果可以看出主机已经开启了80端口，且服务的程序是Nginx
  被访问端：如何确认有请求访问 以下假设访问端和被访问端使用公网访问。
-  ifconfig找出公网流量交换的网卡，比如下图我的是eth0   监听网卡eth0上的80端口的流量 sudo tcpdump -i eth0 port 80
-    开启监听   另外一台机器使用tcpping来访问tcpping 45.34.167.101 80   观察tcpdump结果    结果是连通的，可以清晰看到tcp3次握手的sequence code
- 接下来使用sudo service nginx stop关停nginx的80端口，然后再次做tcpping    端口已经关闭了，tcpdump依然可以看到类似上面的tcp握手请求
- 被访问端：怎么确认端口是可达的（未被封锁）   那么假设防火墙拦截对80端口的请求呢？我们使用iptables对INPUT的流量全部采取DROP处理 sudo iptables -A INPUT -p tcp --dport 80 -j DROP</description>
+  ifconfig找出公网流量交换的网卡，比如下图我的是eth0    监听网卡eth0上的80端口的流量 sudo tcpdump -i eth0 port 80
+    开启监听    另外一台机器使用tcpping来访问tcpping 45.34.167.101 80    观察tcpdump结果     结果是连通的，可以清晰看到tcp3次握手的sequence code
+ 接下来使用sudo service nginx stop关停nginx的80端口，然后再次做tcpping     端口已经关闭了，tcpdump依然可以看到类似上面的tcp握手请求</description>
     </item>
     
     <item>
@@ -204,7 +216,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       <guid>https://sukikaka.cc/2017/08/24/php%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5/</guid>
       <description>服务器配置  工欲善其事必先利其器，如果都不知道什么时候可能会产生日志，不知道哪里能查到错误日志，那么谈何排查？
   启用PHP错误配置[PHP程序运行错误日志]: /etc/php/*/fpm/php.ini （以FPM为例，cli同理）  log_errors = On error_log = /tmp/php_errors.log  启用fpm errors[这个是FPM本身的错误日志，不是服务的PHP程序的错误日志]： /etc/php/*/fpm/php-fpm.ini  error_log = /var/log/php-fpm.log  启用FPM workers slowlog/errors: /etc/php//fpm/pool.d/.conf  ; 因为PHP程序是以fpm worker的形式运行的，所以要获得输出需要启用worker output catch_workers_output = yes ; PHP 程序代码慢查询日志，比如代码中连接了数据库做查询，当超过一定时间则增加一条slowlog slowlog = /var/log/$pool.log.slow ; 此处定义多长时间为慢查询，一般5s已经很丧心病狂了 request_slowlog_timeout = 5s 修改完之后，使用sudo php-fpm -t做测试，一般会有的错误是，错误日志指定的路径不对，或者没权限写入，修改成其他可以写入的路径即可
-一些错误示例   FPM Slow log，该优化代码啦！！！   PHP Error，该修BUG啦！！！   NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
+一些错误示例   FPM Slow log，该优化代码啦！！！    PHP Error，该修BUG啦！！！    NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
  </description>
     </item>
     
@@ -214,7 +226,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       <pubDate>Sat, 27 May 2017 12:41:47 +0000</pubDate>
       
       <guid>https://sukikaka.cc/2017/05/27/%E4%BD%BF%E7%94%A8gitlab-webhooks%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/</guid>
-      <description>为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp;amp; git push &amp;amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;amp;&amp;amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户  将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释</description>
+      <description>为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp;amp; git push &amp;amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;amp;&amp;amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户   将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释</description>
     </item>
     
     <item>
@@ -223,7 +235,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       <pubDate>Thu, 25 May 2017 16:41:50 +0000</pubDate>
       
       <guid>https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</guid>
-      <description>准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;amp;&amp;amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。   我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx   现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash   把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo &#39;extension=mongo.so&#39; &amp;gt; /etc/php5/mods-available/mongo.ini ln -s /etc/php5/mods-available/mongo.</description>
+      <description>准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;amp;&amp;amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。    我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx    现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash    把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo &#39;extension=mongo.</description>
     </item>
     
   </channel>

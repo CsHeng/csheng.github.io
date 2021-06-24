@@ -14,11 +14,11 @@
       
       <guid>https://sukikaka.cc/2021/05/13/%E6%9C%BA%E6%88%BF%E6%89%98%E7%AE%A1%E7%9A%84%E8%A1%80%E4%B8%8E%E6%B3%AA/</guid>
       <description>前言  为了解决日益增长的计算、存储、测试环境的需求，结合我们办公室小机房优异的散热、电量、网络条件(详情如下)，因此在2021年3月份决定将公司的13台Dell R720服务器搬迁到机房进行托管，以期获得稳定的使用条件。
-  散热：开了16度然而还能热出汗的空调 供电：预期下午5点断电早上11点先尝试性进行预演 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let&#39;s Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从3月初决定要搞事，一遍采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整两个月。
+  散热：开了16度然而还能热出汗的空调 供电：物业预期下午5点断电早上11点先进行预演，时不时跳一下闸什么的 机房布线管理：网线乱飞、电源线乱飞、随时踩一脚断电or断网 潘多拉的域名玩法：电信专线并不封堵TCP/443，当年（2017）使用TCP/443并配合DNS-01 challenge验证域名所有权，然后使用Let&#39;s Encrypt来签发证书，最终提供给测试环境HTTPS证书，并且在公网环境提供免备案的服务  极其漫长的踩坑之路  从过年后3月初决定要搞事，开始采购新机器到最终上架“萝岗加速器”机房的时间是5月7号，整整跨了两个月。
  硬件玄学  二手硬件不稳定什么的，对于我们这种垃圾佬当然不是什么问题啦！插电，开机~~~
-  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本直接开机，硬件自检通过，重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&amp;hellip;..    PVE集群之坑   原有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
+  服务器采购（花费一周）  购买6台新的Dell R720 XD 2U服务器，每台机器配置  CPU： E5 2650V2 * 2 H710P mini 硬盘阵列卡 内存：8GB/16GB * 16 = 144GB/288GB     迁移原有服务器(Dell R420)内硬盘到新的机器  顺利的：基本能够直接开机，只要硬件自检通过，然后重新配置阵列卡，开机完成硬件升级 失败的：硬盘阵列卡故障、硬盘背板失败不通电、内存没装好&amp;hellip;..    PVE集群之坑   从已有用于测试环境的3台1U服务器，升级成4台2U的服务器（由于IP经过了变更，所以需要重新组件集群而不是使用现有的集群）
  旧的集群：2台1U服务器原本已经安装了PVE并且有虚拟机提供测试环境数据，正在服役 新的集群：2台新机器直接安装PVE操作系统，组建集群    集群管理的坑
- 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策才算是明确了再次备案不影响原先接入备案的问题。</description>
+ 对pve集群node节点管理不熟悉  官方文档是最好的解决方案   对pve虚拟机磁盘管理不熟悉导致的坑  误删两个虚拟机硬盘，直接导致测试环境需要重建 remove/purge的时候要认真阅读警告信息。。。      域名备案问题  这是个迷之问题，只有在神奇的东方才有这种需求，这个过程花了一些时间去了解政策，才算是明确了再次备案不影响原先接入备案的问题。</description>
     </item>
     
     <item>
@@ -58,7 +58,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       <guid>https://sukikaka.cc/2017/08/24/php%E9%94%99%E8%AF%AF%E6%8E%92%E6%9F%A5/</guid>
       <description>服务器配置  工欲善其事必先利其器，如果都不知道什么时候可能会产生日志，不知道哪里能查到错误日志，那么谈何排查？
   启用PHP错误配置[PHP程序运行错误日志]: /etc/php/*/fpm/php.ini （以FPM为例，cli同理）  log_errors = On error_log = /tmp/php_errors.log  启用fpm errors[这个是FPM本身的错误日志，不是服务的PHP程序的错误日志]： /etc/php/*/fpm/php-fpm.ini  error_log = /var/log/php-fpm.log  启用FPM workers slowlog/errors: /etc/php//fpm/pool.d/.conf  ; 因为PHP程序是以fpm worker的形式运行的，所以要获得输出需要启用worker output catch_workers_output = yes ; PHP 程序代码慢查询日志，比如代码中连接了数据库做查询，当超过一定时间则增加一条slowlog slowlog = /var/log/$pool.log.slow ; 此处定义多长时间为慢查询，一般5s已经很丧心病狂了 request_slowlog_timeout = 5s 修改完之后，使用sudo php-fpm -t做测试，一般会有的错误是，错误日志指定的路径不对，或者没权限写入，修改成其他可以写入的路径即可
-一些错误示例   FPM Slow log，该优化代码啦！！！   PHP Error，该修BUG啦！！！   NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
+一些错误示例   FPM Slow log，该优化代码啦！！！    PHP Error，该修BUG啦！！！    NOTE  看了还不赶紧配置日志、看日志改代码的同学，你懂的。
  </description>
     </item>
     
@@ -68,7 +68,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       <pubDate>Sat, 27 May 2017 12:41:47 +0000</pubDate>
       
       <guid>https://sukikaka.cc/2017/05/27/%E4%BD%BF%E7%94%A8gitlab-webhooks%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2%E4%BB%A3%E7%A0%81/</guid>
-      <description>为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp;amp; git push &amp;amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;amp;&amp;amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户  将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释</description>
+      <description>为什么要用Webhooks来更新代码  服务端的代码，不希望直接在服务器上面做更改，需要有中央仓库做托管管理，也利于协作 某些情况下，不希望给开发人员服务器ssh登录权限 开发时，希望得到更快的上线部署速度，享受git commit &amp;amp; git push &amp;amp; refresh的快感  Webhooks部署时需要考虑的一些因素  现有github，gitlab，oschina等一些托管基本都支持Webhooks，原理都是利用git hooks来做的拓展 什么情况下需要更新代码？根据commit message？根据branch? 更新代码时的执行身份？由什么用户来执行git？  设置Linux服务器  前提：当前已经登录root用户或者具有sudo权限的用户 确认即将用于执行git命令的用户，假定我们新增一个用户名git，专门用于跑git命令，那么执行 sudo adduser git，并设置密码 接下来，将git用户添加到sudo组：sudo adduser git sudo[此步骤非必须] 假定项目代码放在/www下面，且Owner是git，那么执行sudo mkdir /www &amp;amp;&amp;amp; sudo chown -R git:git /www 由于我们的Webhooks代码是用Nginx + PHP-FPM部署的，那么确认下PHP脚本的运行用户情况：ps aux | grep php-fpm， 确认www-data为我们的运行用户   将www-data加到git用户组：sudo usermod -aG git www-data 给www-data用户不需要密码就能切换到git用户，并且用git用户的身份执行/usr/bin/git命令，修改sudoers：sudo vim /etc/sudoers，添加一行配置：www-data ALL=(git) NOPASSWD: /usr/bin/git 允许同组用户新增文件时继承原有文件夹权限位：sudo chmod -R g+s /www[此步骤非必须] 由于我们希望无密码自动拉取代码，那么gitlab代码也是使用ssh方式来配置连接方式的，且hooks被触发时是通过www-data切换成git用户来执行/usr/bin/git命令，那么实际上git pull等命令使用的SSH key是git用户的SSH key，确保已经将git用户的/home/git/.ssh/id_rsa.pub文件的内容设置到gitlab项目中  实现Webhooks项目的代码   请参考gitlab-php-webhooks，具体逻辑请看代码注释</description>
     </item>
     
     <item>
@@ -77,7 +77,7 @@ UPDATE 2017-09-05 由于在实际使用过程中（大概1个多月的持续时�
       <pubDate>Thu, 25 May 2017 16:41:50 +0000</pubDate>
       
       <guid>https://sukikaka.cc/2017/05/25/%E6%89%93%E9%80%A0%E5%9F%BA%E4%BA%8Edocker%E7%9A%84ubuntu-14.04-php-fpm-nginx%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/</guid>
-      <description>准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;amp;&amp;amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。   我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx   现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash   把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo &#39;extension=mongo.so&#39; &amp;gt; /etc/php5/mods-available/mongo.ini ln -s /etc/php5/mods-available/mongo.</description>
+      <description>准备工作  安装docker、docker-compose 更改docker镜像源地址，加速访问  创建Dockerfile  在用户目录下创建docker项目文件夹  $ mkdir -p ~/docker &amp;amp;&amp;amp; cd ~/docker 创建Dockerfile  $ vim Dockerfile 由于我们是基于Ubuntu14.04做的镜像，所以定义好官方Ubuntu地址即可，在Dockerfile插入:FROM ubuntu:trusty，保存Dockerfile，然后运行docker build -t ubuntu:14.04-php-nginx .，如果你是第一次运行，需要从上面修改的docker源拉取ubuntu的镜像，会比较久。    我们用docker images来看结果，会有两个镜像，一个是拉下来的ubuntu:trusty，一个是我们定制的镜像: ubuntu:14.04-php-nginx    现在我们已经拥有一个本地image，使用交互模式启动容器准备进行定制 docker run -t -i ubuntu:14.04-php-nginx /bin/bash    把它当成一台装了Ubuntu的虚拟机，该怎么样怎么样，我们准备安装PHP-FPM和Nginx及一些PHP扩展，那么正常命令是这样的：(容器以root用户登录，且默认没有sudo命令，则不需要sudo)  apt-get update apt-get install -y nginx nginx php5 php5-fpm php-pear php5-dev php5-redis php5-gd php5-curl php5-mcrypt imagemagick php5-imagick supervisor pecl install mongo echo &#39;extension=mongo.</description>
     </item>
     
   </channel>
