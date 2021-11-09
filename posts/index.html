@@ -71,6 +71,26 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://sukikaka.cc/2021/11/09/%E5%88%A9%E7%94%A8-openwrt-%E7%9A%84-hotplug-%E4%BA%8B%E4%BB%B6%E8%A7%A3%E5%86%B3-zerotier-%E5%90%AF%E5%8A%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B7%AF%E7%94%B1%E7%9A%84%E9%9A%BE%E9%A2%98/" title="利用 OpenWRT 的 Hotplug 事件解决 Zerotier 启动时添加自定义路由的难题">利用 OpenWRT 的 Hotplug 事件解决 Zerotier 启动时添加自定义路由的难题</a>
+            </h1>
+        </header>
+        <date class="post-meta meta-date">
+            2021年11月9日
+        </date>
+        
+        <div class="post-content">
+            利用 ip monitor 工具实现路由观察分析，并利用 OpenWRT 的 hotplug 事件解决 Zerotier 启动时添加自定义路由的难题。
+ 背景  公司有多个办公地点，使用zerotier组网 不是所有办公地点都开放实现互访 每个办公地点都会定期变动公网ip，每日执行 ifup wan 对电信网络执行重新拨号，因此会导致自己手动添加的 ip route 路由被清除 如何获得真正加入 zerotier 网络并可用变成了必须解决的问题，因此本文探讨的问题即为此  Zerotier本身依赖UDP打洞技术，属于P2P V*N，没有明确的中心化概念，所以什么时候明确连接上网络是个不可预知的问题 Zerotier本身有所有节点的自定义路由，可以在控制器添加，但本次仅为了单台节点自身添加自定义路由而不希望网络中其他节点也有此路由，因此只能在节点本身动手脚    解决方案  解决方案大体有这么两种
+  方案1：可以全部通过zerotier custom route实现，全路由转发，再配合iptables ACCEPT来实现访问控制 方案2：仅在需要访问其他子网的路由节点本地添加自定义路由  分析步骤  打开监控 ip monitor all 之后执行 service zerotier stop  1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21  [NEIGH]172.……
+        </div>
+        <p class="readmore"><a href="https://sukikaka.cc/2021/11/09/%E5%88%A9%E7%94%A8-openwrt-%E7%9A%84-hotplug-%E4%BA%8B%E4%BB%B6%E8%A7%A3%E5%86%B3-zerotier-%E5%90%AF%E5%8A%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B7%AF%E7%94%B1%E7%9A%84%E9%9A%BE%E9%A2%98/">阅读全文</a></p>
+    </article>
+    
+    
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
             </h1>
         </header>
@@ -269,34 +289,6 @@ When support for time zones is enabled, Django stores datetime information in UT
     
     
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" title="Ubnt ER-X pppoe定时重新拨号">Ubnt ER-X pppoe定时重新拨号</a>
-            </h1>
-        </header>
-        <date class="post-meta meta-date">
-            2018年6月29日
-        </date>
-        
-        <div class="post-content">
-            为什么需要定时拨号？ 先来看一组数据
-  从命令sudo cat /var/log/messages | grep local的输出结果来看，IP地址基本上每隔一定时间就发生变化。    从命令show interface pppoe pppoe0 log里面可以找出类似的日志，大意是电信给我们的路由器发了terminate命令，让我们断开连接。    结论也就是：
- 广州电信，每次拨号维持时间为2875分钟/23小时55分钟，每次拨号维持这么长时间会被强行断网。 时间刚好是9点左右，每隔两天会减少5分钟，也就是。。。如果我周末这个时间点在家玩游戏，然后刚好碰上了，给我来个断网，呵呵
- 解决方案 既然知道电信有这么蛋疼的设定，那么我们完全可以在不使用网络的情况下主动断开并重连来避开这个问题。
-具体使用命令主要是下面两个：
- 断开pppoe disconnect interface pppoe0 连接pppoe进行拨号 connect interface pppoe0
- 那么如何定时去执行呢？
- ERX运行的系统基于Linux，那么第一个想到的方案就是使用crontab来跑定时任务，而在相当长的一段时间也是这样干的（路由器固件一般一两个月更新一个版本，除了更新版本，就没重启过路由了。。。） 直到，最近更新了路由器固件，crontab设置被清空了（这是固件设定，需要经过特定的方式做更新才能免于灾难）
- 所以。。。最后写了个自定义的脚本，再使用系统授权的方式 task-scheduler 来执行这个脚本。
- 编辑文件: sudo vi /config/scripts/pppoe-redial.sh  #!/bin/bash # 由于connect/disconnect命令都是alias，所以需要使用wrapper run=/opt/vyatta/bin/vyatta-op-cmd-wrapper $run disconnect interface pppoe0 sleep 10 $run connect interface pppoe0 保存～
- 赋予执行权限 sudo chmod +x /config/scripts/pppoe-redial.……
-        </div>
-        <p class="readmore"><a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/">阅读全文</a></p>
-    </article>
-    
-    
-    
 
 
 
@@ -374,6 +366,10 @@ When support for time zones is enabled, Django stores datetime information in UT
 <ul class="widget-list">
     
     <li>
+        <a href="https://sukikaka.cc/2021/11/09/%E5%88%A9%E7%94%A8-openwrt-%E7%9A%84-hotplug-%E4%BA%8B%E4%BB%B6%E8%A7%A3%E5%86%B3-zerotier-%E5%90%AF%E5%8A%A8%E6%97%B6%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%AE%9A%E4%B9%89%E8%B7%AF%E7%94%B1%E7%9A%84%E9%9A%BE%E9%A2%98/" title="利用 OpenWRT 的 Hotplug 事件解决 Zerotier 启动时添加自定义路由的难题">利用 OpenWRT 的 Hotplug 事件解决 Zerotier 启动时添加自定义路由的难题</a>
+    </li>
+    
+    <li>
         <a href="https://sukikaka.cc/2021/06/24/linux-%E5%8A%A8%E6%80%81%E5%88%87%E6%8D%A2%E8%B7%AF%E7%94%B1%E8%A1%A8/" title="Linux 动态切换路由表">Linux 动态切换路由表</a>
     </li>
     
@@ -407,10 +403,6 @@ When support for time zones is enabled, Django stores datetime information in UT
     
     <li>
         <a href="https://sukikaka.cc/2018/11/27/python%E6%97%A5%E6%9C%9F%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86%E5%8F%8A%E5%A4%84%E7%90%86/" title="Python日期相关知识及处理">Python日期相关知识及处理</a>
-    </li>
-    
-    <li>
-        <a href="https://sukikaka.cc/2018/06/29/ubnt-er-x-pppoe%E5%AE%9A%E6%97%B6%E9%87%8D%E6%96%B0%E6%8B%A8%E5%8F%B7/" title="Ubnt ER-X pppoe定时重新拨号">Ubnt ER-X pppoe定时重新拨号</a>
     </li>
     
 </ul>
